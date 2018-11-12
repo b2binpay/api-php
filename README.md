@@ -4,9 +4,11 @@ Accepting [Bitcoin](https://bitcoin.org/), [Bitcoin Cash](https://www.bitcoincas
 
 Status Label  | Status Value
 --------------|-------------
+Build (Travis CI) | [![Build Status](https://travis-ci.org/b2binpay/api-php.svg?branch=master)](https://travis-ci.org/b2binpay/api-php)
 Build (Scrutinizer) | [![Build Status](https://scrutinizer-ci.com/g/b2binpay/api-php/badges/build.png?b=master)](https://scrutinizer-ci.com/g/b2binpay/api-php/build-status/master)
-Code Quality (Scrutinizer) | [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/b2binpay/api-php/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/b2binpay/api-php/?branch=master)
+Code Coverage (Coveralls) | [![Coverage Status](https://coveralls.io/repos/github/b2binpay/api-php/badge.svg?branch=master)](https://coveralls.io/github/b2binpay/api-php?branch=master)
 Code Coverage (Scrutinizer) | [![Code Coverage](https://scrutinizer-ci.com/g/b2binpay/api-php/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/b2binpay/api-php/?branch=master)
+Code Quality (Scrutinizer) | [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/b2binpay/api-php/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/b2binpay/api-php/?branch=master)
 Code Intelligence (Scrutinizer) | [![Code Intelligence Status](https://scrutinizer-ci.com/g/b2binpay/api-php/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
 
 ## Requirements
