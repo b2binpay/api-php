@@ -31,7 +31,7 @@ class Provider
     /**
      * @param string $authKey
      * @param string $authSecret
-     * @param bool|false $isTest
+     * @param bool|false $testing
      * @param Client|null $client
      * @param Currency|null $currency
      * @param AmountFactory|null $amountFactory
@@ -40,7 +40,7 @@ class Provider
     public function __construct(
         string $authKey,
         string $authSecret,
-        bool $isTest = false,
+        bool $testing = false,
         Client $client = null,
         Currency $currency = null,
         AmountFactory $amountFactory = null,
@@ -55,7 +55,7 @@ class Provider
             $authKey,
             $authSecret,
             $request,
-            $isTest
+            $testing
         );
     }
 

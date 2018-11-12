@@ -63,24 +63,24 @@ class Api implements ApiInterface
     /**
      * @var bool
      */
-    private $isTest;
+    private $testing;
 
     /**
      * @param string $authKey
      * @param string $authSecret
      * @param Request|null $request
-     * @param bool|false $isTest
+     * @param bool|false $testing
      */
     public function __construct(
         string $authKey,
         string $authSecret,
         Request $request = null,
-        bool $isTest = false
+        bool $testing = false
     ) {
         $this->authKey = $authKey;
         $this->authSecret = $authSecret;
         $this->request = $request ?? new Request();
-        $this->isTest = $isTest;
+        $this->testing = $testing;
     }
 
     /**
@@ -109,7 +109,7 @@ class Api implements ApiInterface
      */
     private function getGateway(): string
     {
-        return ($this->isTest) ? self::GW_TEST : self::GW_PRODUCTION;
+        return ($this->testing) ? self::GW_TEST : self::GW_PRODUCTION;
     }
 
     /**
@@ -131,7 +131,7 @@ class Api implements ApiInterface
      */
     public function getNewBillUrl(int $iso): string
     {
-        $gateway = ($this->isTest) ? self::GW_TEST : $this->getNode($iso);
+        $gateway = ($this->testing) ? self::GW_TEST : $this->getNode($iso);
         $uri = self::URI_BILLS;
 
         return $gateway . $uri;
@@ -143,7 +143,7 @@ class Api implements ApiInterface
      */
     public function getBillsUrl(int $bill = null): string
     {
-        $gateway = ($this->isTest) ? self::GW_TEST : self::GW_PRODUCTION;
+        $gateway = ($this->testing) ? self::GW_TEST : self::GW_PRODUCTION;
         $uri = self::URI_BILLS;
 
         if (!empty($bill)) {
@@ -208,10 +208,10 @@ class Api implements ApiInterface
     }
 
     /**
-     * @param bool $isTest
+     * @param bool $testing
      */
-    public function setIsTest(bool $isTest)
+    public function setTesting(bool $testing)
     {
-        $this->isTest = $isTest;
+        $this->testing = $testing;
     }
 }

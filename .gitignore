@@ -1,5 +1,4 @@
-/vendor/
 /.idea/
 /public/report
-composer.lock
+/vendor/
 .env

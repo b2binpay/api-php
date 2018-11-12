@@ -56,11 +56,11 @@ class ApiTest extends TestCase
         $node = $this->api->getNode(1000);
         $this->assertEquals($this->getNode(), $node);
 
-        $this->api->setIsTest(true);
+        $this->api->setTesting(true);
         $url = $this->api->getNewBillUrl(1000);
         $this->assertEquals($this->api::GW_TEST . $this->api::URI_BILLS, $url);
 
-        $this->api->setIsTest(false);
+        $this->api->setTesting(false);
         $url = $this->api->getNewBillUrl(1000);
         $this->assertEquals($node . $this->api::URI_BILLS, $url);
     }
@@ -73,19 +73,19 @@ class ApiTest extends TestCase
         $testUrl = $this->api::GW_TEST . $this->api::URI_BILLS;
         $prodUrl = $this->api::GW_PRODUCTION . $this->api::URI_BILLS;
 
-        $this->api->setIsTest(true);
+        $this->api->setTesting(true);
         $url = $this->api->getBillsUrl();
         $this->assertEquals($testUrl, $url);
 
-        $this->api->setIsTest(false);
+        $this->api->setTesting(false);
         $url = $this->api->getBillsUrl();
         $this->assertEquals($prodUrl, $url);
 
-        $this->api->setIsTest(false);
+        $this->api->setTesting(false);
         $url = $this->api->getBillsUrl($bill1);
         $this->assertEquals($prodUrl . '/' . $bill1, $url);
 
-        $this->api->setIsTest(true);
+        $this->api->setTesting(true);
         $url = $this->api->getBillsUrl($bill2);
         $this->assertEquals($testUrl . '/' . $bill2, $url);
     }
@@ -98,30 +98,30 @@ class ApiTest extends TestCase
         $testUrl = $this->api::GW_TEST . $this->api::URI_WALLETS;
         $prodUrl = $this->api::GW_PRODUCTION . $this->api::URI_WALLETS;
 
-        $this->api->setIsTest(true);
+        $this->api->setTesting(true);
         $url = $this->api->getWalletsUrl();
         $this->assertEquals($testUrl, $url);
 
-        $this->api->setIsTest(false);
+        $this->api->setTesting(false);
         $url = $this->api->getWalletsUrl();
         $this->assertEquals($prodUrl, $url);
 
-        $this->api->setIsTest(false);
+        $this->api->setTesting(false);
         $url = $this->api->getWalletsUrl($wallet1);
         $this->assertEquals($prodUrl . '/' . $wallet1, $url);
 
-        $this->api->setIsTest(true);
+        $this->api->setTesting(true);
         $url = $this->api->getWalletsUrl($wallet2);
         $this->assertEquals($testUrl . '/' . $wallet2, $url);
     }
 
     public function testGetRatesUrl()
     {
-        $this->api->setIsTest(true);
+        $this->api->setTesting(true);
         $url = $this->api->getRatesUrl();
         $this->assertEquals($this->api::GW_TEST . $this->api::URI_DEPOSIT, $url);
 
-        $this->api->setIsTest(false);
+        $this->api->setTesting(false);
         $url = $this->api->getRatesUrl();
         $this->assertEquals($this->api::GW_PRODUCTION . $this->api::URI_DEPOSIT, $url);
     }
