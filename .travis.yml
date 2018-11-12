@@ -1,0 +1,13 @@
+language: php
+sudo: false
+install: composer install
+
+php:
+  - '7.0'
+  - '7.1'
+  - '7.2'
+  - 'hhvm'
+
+matrix:
+  allow_failures:
+  - php: hhvm
