@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="./vendor/autoload.php" colors="true">
+    <testsuites>
+        <testsuite name="B2Binpay_PHP">
+            <directory>./tests</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <env name="APP_ENV" value="testing"/>
+        <env name="GATEWAY" value="localhost"/>
+        <env name="AUTH_KEY" value="a"/>
+        <env name="AUTH_SECRET" value="b"/>
+        <env name="AUTH_BASIC" value="YTpi"/>
+        <env name="AUTH" value="Basic YTpi"/>
+        <env name="CURRENCY_ISO" value="978"/>
+        <env name="CURRENCY_ALPHA" value="EUR"/>
+        <env name="CURRENCY_NAME" value="Euro"/>
+        <env name="CURRENCY_PRECISION" value="2"/>
+        <env name="NODE_BTC" value="https://btc.b2binpay.com"/>
+    </php>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-html" target="./public/report" charset="UTF-8"
+             yui="true" highlight="true"
+             lowUpperBound="50" highLowerBound="80"/>
+    </logging>
+</phpunit>
