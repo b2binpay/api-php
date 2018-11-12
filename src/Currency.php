@@ -116,13 +116,17 @@ class Currency
      */
     public function getIso(string $alpha): int
     {
-        $iso = array_search(
-            strtoupper($alpha),
-            array_column(
-                self::$list,
-                'alpha',
-                'iso'
-            )
+        $alpha = strtoupper($alpha);
+
+        $iso = array_reduce(
+            self::$list,
+            function ($carry, $item) use ($alpha) {
+                if ($item['alpha'] === $alpha) {
+                    $carry = $item['iso'];
+                }
+                return (int)$carry;
+            },
+            array()
         );
 
         if (empty($iso)) {

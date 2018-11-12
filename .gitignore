@@ -1,4 +1,5 @@
-/.idea/
-/public/report
-/vendor/
+.idea/
+vendor/
 .env
+composer.lock
+coverage.xml

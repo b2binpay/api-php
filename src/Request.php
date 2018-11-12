@@ -15,7 +15,7 @@ class Request
     const ERROR_UPDATE_TOKEN = ['-240', 'RESULT_TOKEN_ERROR_EXPIRED'];
 
     /**
-     * @var Client|null
+     * @var Client
      */
     private $client;
 

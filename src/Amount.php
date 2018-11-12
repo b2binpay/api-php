@@ -42,7 +42,7 @@ class Amount
     {
         $value = Decimal::fromString($sum);
 
-        $this->precision = $iso ? $this->currency->getPrecision($iso) : null;
+        $this->precision = $iso ? $this->currency->getPrecision($iso) : 0;
 
         if (empty($pow)) {
             $scale = max($this->calcScale($sum), $this->currency->getMaxPrecision());
@@ -62,7 +62,7 @@ class Amount
     {
         $return = $this->value;
 
-        if (!empty($this->precision)) {
+        if (0 !== $this->precision) {
             $return = $this->value->ceil($this->precision);
         }
 

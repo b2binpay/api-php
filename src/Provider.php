@@ -19,12 +19,12 @@ class Provider
     private $api;
 
     /**
-     * @var Currency|null
+     * @var Currency
      */
     private $currency;
 
     /**
-     * @var AmountFactory|null
+     * @var AmountFactory
      */
     private $amountFactory;
 
@@ -143,11 +143,16 @@ class Provider
 
         $rates = $rates ?? $this->getRates($currencyFrom);
 
-        foreach ($rates as $rateObj) {
-            if ($rateObj->to->iso == $isoTo) {
-                $rate = $this->amountFactory->create($rateObj->rate, null, $rateObj->pow);
-            }
-        }
+        $rate = array_reduce(
+            $rates,
+            function ($carry, $item) use ($isoTo) {
+                if ($item->to->iso === $isoTo) {
+                    $carry = $this->amountFactory->create($item->rate, null, $item->pow);
+                }
+                return $carry;
+            },
+            array()
+        );
 
         if (empty($rate)) {
             throw new IncorrectRatesException("Can't get rates to convert from $isoFrom to $isoTo");
