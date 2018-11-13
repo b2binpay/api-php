@@ -130,4 +130,4 @@ You can use it for `createBill()`, `addMarkup()` and `convertCurrency()` methods
 
 ## License
    
-B2BinPAY\API-PHP is licensed under the [GPL License](https://github.com/b2binpay/api-php/blob/master/LICENSE).
+B2BinPAY\API-PHP is licensed under the [MIT License](https://github.com/b2binpay/api-php/blob/master/LICENSE).
