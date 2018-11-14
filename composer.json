@@ -1,6 +1,6 @@
 {
     "name": "b2binpay/api-php",
-    "description": "PHP client for B2BinPAY",
+    "description": "PHP client for B2BinPay",
     "version": "1.0.0",
     "type": "library",
     "license": "MIT",

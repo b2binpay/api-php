@@ -1,4 +1,4 @@
-# B2BinPAY API client for PHP
+# B2BinPay API client for PHP
 
 Accepting [Bitcoin](https://bitcoin.org/), [Bitcoin Cash](https://www.bitcoincash.org/), [Ethereum](https://www.ethereum.org/), [DASH](https://www.dash.org/), [Litecoin](https://litecoin.org/), [Monero](https://getmonero.org/), [NEO](https://neo.org), [NEM](https://nem.io/), [Ripple](https://ripple.com/), [B2BX](https://b2bx.org/) and any ERC20, NEO tokens in one place!
 
@@ -11,7 +11,7 @@ Accepting [Bitcoin](https://bitcoin.org/), [Bitcoin Cash](https://www.bitcoincas
 
 ## Composer Installation
 
-The easiest way to install the B2BinPAY API client is to require it with [Composer](http://getcomposer.org/doc/00-intro.md) through command-line:
+The easiest way to install the B2BinPay API client is to require it with [Composer](http://getcomposer.org/doc/00-intro.md) through command-line:
 ```
     $ composer require b2binpay/api-php
 ```
@@ -26,7 +26,7 @@ or by editing `composer.json`:
 
 ## Getting started
 
-Use the API key and secret to access your B2BinPAY account:
+Use the API key and secret to access your B2BinPay account:
 
 ```php
 $provider = new B2Binpay\Provider(
@@ -63,7 +63,7 @@ $bill = $provider->createBill(
     LIFETIME
 );
 ```
-_where `LIFETIME` - number of seconds for payment page to live and `WALLET_ID` - your B2BinPAY wallet id._
+_where `LIFETIME` - number of seconds for payment page to live and `WALLET_ID` - your B2BinPay wallet id._
 
 Now the bill id is available in the `$bill->id` property. You should store this id with your order.
 
@@ -130,4 +130,4 @@ You can use it for `createBill()`, `addMarkup()` and `convertCurrency()` methods
 
 ## License
    
-B2BinPAY\API-PHP is licensed under the [MIT License](https://github.com/b2binpay/api-php/blob/master/LICENSE).
+B2BinPay\API-PHP is licensed under the [MIT License](https://github.com/b2binpay/api-php/blob/master/LICENSE).

@@ -3,6 +3,11 @@ declare(strict_types=1);
 
 namespace B2Binpay;
 
+/**
+ * Amount Factory
+ *
+ * @package B2Binpay
+ */
 class AmountFactory
 {
     /**

@@ -3,13 +3,18 @@ declare(strict_types=1);
 
 namespace B2Binpay;
 
-use B2Binpay\Exception\EmptyResponseException;
 use B2Binpay\Exception\ConnectionErrorException;
+use B2Binpay\Exception\EmptyResponseException;
 use B2Binpay\Exception\ServerApiException;
 use B2Binpay\Exception\UpdateTokenException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
+/**
+ * Send and validate requests through GuzzleHttp
+ *
+ * @package B2Binpay
+ */
 class Request
 {
     const ERROR_UPDATE_TOKEN = ['-240', 'RESULT_TOKEN_ERROR_EXPIRED'];
@@ -77,8 +82,8 @@ class Request
      * @param array $request
      * @return mixed
      * @throws ConnectionErrorException
-     * @throws ServerApiException
      * @throws EmptyResponseException
+     * @throws ServerApiException
      * @throws UpdateTokenException
      */
     private function execute(string $method, string $url, array $request)

@@ -9,7 +9,9 @@ use B2Binpay\Exception\IncorrectRatesException;
 use GuzzleHttp\Client;
 
 /**
- * B2BinPAY payment provider
+ * B2BinPay payment provider
+ *
+ * @package B2Binpay
  */
 class Provider
 {

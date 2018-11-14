@@ -7,6 +7,8 @@ use Litipk\BigNumbers\Decimal;
 
 /**
  * Carry about precision according to currency using BigNumbers
+ *
+ * @package B2Binpay
  */
 class Amount
 {

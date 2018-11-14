@@ -3,13 +3,10 @@ declare(strict_types=1);
 
 namespace B2Binpay;
 
-use B2Binpay\Exception\ConnectionErrorException;
-use B2Binpay\Exception\EmptyResponseException;
-use B2Binpay\Exception\ServerApiException;
-use B2Binpay\Exception\UnknownValueException;
-
 /**
- * B2BinPAY API Client Interface
+ * B2BinPay API Client Interface
+ *
+ * @package B2Binpay
  */
 interface ApiInterface
 {
@@ -18,9 +15,6 @@ interface ApiInterface
      * @param string $url
      * @param array|null $params
      * @return mixed
-     * @throws ConnectionErrorException
-     * @throws ServerApiException
-     * @throws EmptyResponseException
      */
     public function sendRequest(string $method, string $url, array $params = null);
 

@@ -5,6 +5,11 @@ namespace B2Binpay;
 
 use B2Binpay\Exception\UnknownValueException;
 
+/**
+ * Currency directory
+ *
+ * @package B2Binpay
+ */
 class Currency
 {
     const MAX_PRECISION = 18;

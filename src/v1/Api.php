@@ -9,7 +9,9 @@ use B2Binpay\Exception\UpdateTokenException;
 use B2Binpay\Exception\UnknownValueException;
 
 /**
- * B2BinPAY API Client v1 Implementation
+ * B2BinPay API Client v1 Implementation
+ *
+ * @package B2Binpay
  */
 class Api implements ApiInterface
 {
@@ -115,6 +117,7 @@ class Api implements ApiInterface
     /**
      * @param int $iso
      * @return string
+     * @throws UnknownValueException
      */
     public static function getNode(int $iso): string
     {
