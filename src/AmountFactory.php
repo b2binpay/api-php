@@ -13,11 +13,11 @@ class AmountFactory
     /**
      * AmountFactory constructor.
      *
-     * @param Currency $currency
+     * @param Currency|null $currency
      */
-    public function __construct(Currency $currency)
+    public function __construct(Currency $currency = null)
     {
-        $this->currency = $currency;
+        $this->currency = $currency ?? new Currency();
     }
 
     /**

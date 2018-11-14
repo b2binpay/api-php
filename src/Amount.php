@@ -26,11 +26,11 @@ class Amount
     private $precision;
 
     /**
-     * @param Currency|null $currency
+     * @param Currency $currency
      */
-    public function __construct(Currency $currency = null)
+    public function __construct(Currency $currency)
     {
-        $this->currency = $currency ?? new Currency();
+        $this->currency = $currency;
     }
 
     /**
