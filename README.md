@@ -6,6 +6,7 @@ Accepting [Bitcoin](https://bitcoin.org/), [Bitcoin Cash](https://www.bitcoincas
 
 ## Requirements
 
++ [B2BinPay](https://www.b2binpay.com) account
 + PHP >= 7.0
 + PHP extensions enabled: cURL, JSON
 
@@ -47,7 +48,7 @@ $provider = new B2Binpay\Provider(
 );
 ``` 
 
-**Warning: Sandbox and main gateway has their own pairs of key and secret!**
+**Warning: Sandbox and main gateway have their own pairs of key and secret!**
 
 ### Create bill
 
@@ -97,7 +98,7 @@ Now you can provide `$amount` variable as a second parameter for `createBill()` 
 
 ### Add markup
 
-You can add some markup for existing amount.
+You can add some markup for the existing amount.
 
 Set _10%_ markup for current amount:
 
@@ -126,7 +127,7 @@ You can use it for `createBill()`, `addMarkup()` and `convertCurrency()` methods
 | 1 | Payment pending |
 | 2 | Payment success |
 | 3 | Payment freeze |
-| 4 | Payment closed (funds withdrawn) |
+| 4 | Payment closed (funds are withdrawn) |
 
 ## License
    
