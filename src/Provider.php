@@ -84,9 +84,7 @@ class Provider
      */
     public function getRates(string $currency)
     {
-        $iso = $this->currency->getIso($currency);
-        $alpha = $this->currency->getAlpha($iso);
-        $url = $this->api->getRatesUrl() . strtolower($alpha);
+        $url = $this->api->getRatesUrl() . strtolower($currency);
 
         $response = $this->api->sendRequest('get', $url);
 

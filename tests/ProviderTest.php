@@ -80,12 +80,6 @@ class ProviderTest extends TestCase
         $alpha = 'btc';
         $response = [1, 2];
 
-        $this->currency->method('getIso')
-            ->willReturn($this->getCurrencyIso());
-
-        $this->currency->method('getAlpha')
-            ->willReturn($alpha);
-
         $this->api->method('getRatesUrl')
             ->willReturn($url);
 
@@ -97,7 +91,7 @@ class ProviderTest extends TestCase
             )
             ->willReturn($response);
         
-        $rates = $this->provider->getRates('currency');
+        $rates = $this->provider->getRates($alpha);
         $this->assertEquals($response, $rates);
     }
 
