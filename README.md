@@ -48,9 +48,9 @@ $provider = new B2Binpay\Provider(
 );
 ``` 
 
-**Warning: Sandbox and main gateway have their own pairs of key and secret!**
+**Warning:** Sandbox and main gateway have their own pairs of key and secret!
 
-### Create bill
+### Create a bill
 
 _The payment currency is considered to match the currency of your wallet_.
 
@@ -76,7 +76,7 @@ Finally, you can check bill status by requesting it using the stored id:
 $billCheck = $provider->getBill($bill->id);
 ```
 
-Status will be stored in `$billCheck->status` property.
+The bill status will be stored in `$billCheck->status` property.
 
 ### Convert currency
 
@@ -94,11 +94,11 @@ Convert currency using actual rates:
 $amount = $provider->convertCurrency('100', 'USD', 'BTC', $rates);
 ```
 
-Now you can provide `$amount` variable as a second parameter for `createBill()` method to set accurate amount of cryptocurrency.
+Now you can provide `$amount` variable as a second parameter for `createBill()` method to set an accurate amount of cryptocurrency.
 
 ### Add markup
 
-You can add some markup for the existing amount.
+You can add some markup to the existing amount.
 
 Set _10%_ markup for current amount:
 
@@ -117,6 +117,62 @@ $wallet = $provider->getWallet(WALLET_ID);
 Now your wallet's currency alpha code is stored in the `$wallet->currency->alpha` parameter.
 
 You can use it for `createBill()`, `addMarkup()` and `convertCurrency()` methods.
+
+### Callback
+
+Once bill status changed, our server can send a callback to your configured Callback URL. Also, you can specify Tracking ID, which will return with the callback to identify the exact order.
+To do that provide additional parameters to `createBill()` method:
+
+```php
+$bill = $provider->createBill(
+    WALLET_ID,
+    '0.00000001',
+    'BTC',
+    LIFETIME,
+    TRACKING_ID,
+    'https://my.callback.url/'
+);
+```
+
+**Warning:** If specified, your Callback URL should return the message "OK" with status 200. Until that payment will not be considered complete!
+
+```
+   Status: 200
+    Body : OK
+```
+
+#### Callback verification
+
+You can verify Callback request headers by comparing it with the `getAuthorization()` method output:
+
+```php
+if (empty($headers['Authorization']) || ($headers['Authorization'] !== $provider->getAuthorization())) {
+    header('HTTP/1.1 401 Unauthorized');
+    exit();
+}
+```
+
+#### Callback body
+
+Callback request will contain the following data:
+
+```json
+{
+    "data": {
+        "id": ID,
+        "url": URL_TO_BILL_PAGE,
+        "address": BLOCKCHAIN_ADDRESS,
+        "created": TIME,
+        "expired": TIME|NULL,
+        "status": BILL_STATUS,
+        "tracking_id": TRACKING_ID,
+        "amount": AMOUNT_MULTIPLIED_BY_TEN_IN_POW,
+        "actual_amount": ALREADY_PAID_AMOUNT_MULTIPLIED_BY_TEN_IN_POW,
+        "pow": POW,
+        "message": MESSAGE
+    }
+}
+```
 
 ### List of bill statuses
 
