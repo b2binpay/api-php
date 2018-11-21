@@ -156,7 +156,7 @@ if (empty($headers['Authorization']) || ($headers['Authorization'] !== $provider
 
 Callback request will contain the following data:
 
-```json
+```
 {
     "data": {
         "id": ID,
