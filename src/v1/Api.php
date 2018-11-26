@@ -16,7 +16,8 @@ use B2Binpay\Exception\UnknownValueException;
 class Api implements ApiInterface
 {
     const GW_PRODUCTION = 'https://gw.b2binpay.com';
-    const GW_TEST = 'https://paysystemtest.b2broker.info';
+    const GW_TEST = 'https://gw-test.b2binpay.com';
+    const TEST_NODE = 'https://cr-test.b2binpay.com';
 
     const URI_LOGIN = '/api/login';
     const URI_BILLS = '/api/v1/pay/bills';
@@ -134,7 +135,7 @@ class Api implements ApiInterface
      */
     public function getNewBillUrl(int $iso): string
     {
-        $gateway = ($this->testing) ? self::GW_TEST : $this->getNode($iso);
+        $gateway = ($this->testing) ? self::TEST_NODE : $this->getNode($iso);
         $uri = self::URI_BILLS;
 
         return $gateway . $uri;
