@@ -27,6 +27,10 @@ or by editing `composer.json`:
 
 ## Getting started
 
+See example code with comments in [public/index.php](public/index.php)
+
+### Create Provider instance
+
 Use the API key and secret to access your B2BinPay account:
 
 ```php
@@ -36,7 +40,7 @@ $provider = new B2Binpay\Provider(
 );
 ``` 
 
-### Test Mode
+#### Test Mode
 
 In order to use testing sandbox, pass `true` as a third parameter for `B2Binpay\Provider`:
 
@@ -136,9 +140,9 @@ $bill = $provider->createBill(
 
 **Warning:** If specified, your Callback URL should return the message "OK" with status 200. Until that payment will not be considered complete!
 
-```
-   Status: 200
-    Body : OK
+```php
+header('HTTP/1.1 200 OK');
+exit('OK');
 ```
 
 #### Callback verification

@@ -1,4 +1,5 @@
 build/
 vendor/
+public/callback.txt
 .env
 composer.lock
