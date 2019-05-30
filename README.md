@@ -6,7 +6,7 @@ Accepting [Bitcoin](https://bitcoin.org/), [Bitcoin Cash](https://www.bitcoincas
 
 ## Requirements
 
-+ [B2BinPay](https://www.b2binpay.com) account
++ [B2BinPay](https://b2binpay.com) account
 + PHP >= 7.0
 + PHP extensions enabled: cURL, JSON
 
