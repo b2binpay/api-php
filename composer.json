@@ -6,7 +6,7 @@
     "require": {
         "litipk/php-bignumbers": "^0.8",
         "guzzlehttp/guzzle": "^6.3",
-        "vlucas/phpdotenv": "^2.5",
+        "vlucas/phpdotenv": "^2.5|^3.3",
         "php": "^7",
         "ext-json": "*"
     },
