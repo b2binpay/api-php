@@ -79,43 +79,17 @@ class Provider
 
     /**
      * @param string $currency
+     * @param string $rateType = 'deposit' or 'withdraw'
      * @return mixed Rates
      * @throws B2BinpayException
      */
-    public function getRates(string $currency)
+    public function getRates(string $currency = 'USD', string $rateType = 'deposit')
     {
-        $url = $this->api->getRatesUrl() . strtolower($currency);
+        $url = $this->api->getRatesUrl($rateType) . strtolower($currency);
 
         $response = $this->api->sendRequest('get', $url);
 
-        return $response;
-    }
-
-    /**
-     * @return mixed Wallets List
-     * @throws B2BinpayException
-     */
-    public function getWallets()
-    {
-        $url = $this->api->getWalletsUrl();
-
-        $response = $this->api->sendRequest('get', $url);
-
-        return $response;
-    }
-
-    /**
-     * @param int $wallet
-     * @return mixed Wallet
-     * @throws B2BinpayException
-     */
-    public function getWallet(int $wallet)
-    {
-        $url = $this->api->getWalletsUrl($wallet);
-
-        $response = $this->api->sendRequest('get', $url);
-
-        return $response;
+        return $response->data;
     }
 
     /**
@@ -150,8 +124,7 @@ class Provider
                     $carry = $this->amountFactory->create($item->rate, null, $item->pow);
                 }
                 return $carry;
-            },
-            array()
+            }
         );
 
         if (empty($rate)) {
@@ -179,66 +152,250 @@ class Provider
     }
 
     /**
-     * @param int $wallet
-     * @param string $sum
+     * @param int $walletId
+     * @param string $amount
      * @param string $currency
      * @param int $lifetime
      * @param string|null $trackingId
      * @param string|null $callbackUrl
+     * @param string|null $successUrl
+     * @param string|null $errorUrl
+     * @param string|null $address
      * @return mixed Bill
      */
     public function createBill(
-        int $wallet,
-        string $sum,
+        int $walletId,
+        string $amount,
         string $currency,
         int $lifetime,
         string $trackingId = null,
-        string $callbackUrl = null
-    ) {
+        string $callbackUrl = null,
+        string $successUrl = null,
+        string $errorUrl = null,
+        string $address = null
+    ) {        
         $iso = $this->currency->getIso($currency);
-        $url = $this->api->getNewBillUrl($iso);
+        $url = $this->api->getNewBillUrl($currency);
 
-        $amount = $this->amountFactory->create($sum, $iso);
+        $amountFactory = $this->amountFactory->create($amount, $iso);
 
         $params = [
-            'amount' => $amount->getPowed(),
-            'wallet' => $wallet,
-            'pow' => $amount->getPrecision(),
-            'lifetime' => $lifetime,
-            'tracking_id' => $trackingId,
-            'callback_url' => $callbackUrl
+            'form_params' => [
+                'amount' => $amountFactory->getPowed(),
+                'wallet' => $walletId,
+                'pow' => $amountFactory->getPrecision(),
+                'lifetime' => $lifetime,
+                'tracking_id' => $trackingId,
+                'callback_url' => $callbackUrl,
+                'success_url' => $successUrl,
+                'error_url' => $errorUrl,
+                'address' => $address
+            ]
         ];
 
         $response = $this->api->sendRequest('post', $url, $params);
 
-        return $response;
+        return $response->data;
     }
 
     /**
-     * @param int $wallet
+     * @param array $params
      * @return mixed Bills list
      * @throws B2BinpayException
      */
-    public function getBills(int $wallet)
+    public function getBills(array $params = [])
     {
-        $url = $this->api->getBillsUrl($wallet);
+        $url = $this->api->getBillsUrl(null, $params);
 
-        $response = $this->api->sendRequest('get', $url);
+        $response = $this->api->sendRequest('get', $url, $params);
 
         return $response;
     }
 
     /**
-     * @param int $bill
+     * @param int $billId
      * @return mixed Bill
      * @throws B2BinpayException
      */
-    public function getBill(int $bill)
+    public function getBill(int $billId)
     {
-        $url = $this->api->getBillsUrl($bill);
+        $url = $this->api->getBillsUrl($billId);
 
         $response = $this->api->sendRequest('get', $url);
 
+        return $response->data;
+    }
+
+    /**
+     * @param array $params
+     * @return mixed Transactions list
+     * @throws B2BinpayException
+     */
+    public function getTransactions(array $params = [])
+    {
+        $url = $this->api->getTransactionsUrl(null, $params);
+
+        $response = $this->api->sendRequest('get', $url, $params);
+
         return $response;
     }
+
+    /**
+     * @param int $transactionId
+     * @return mixed Transaction
+     * @throws B2BinpayException
+     */
+    public function getTransaction(int $transactionId)
+    {
+        $url = $this->api->getTransactionsUrl($transactionId);
+
+        $response = $this->api->sendRequest('get', $url);
+
+        return $response->data;
+    }
+
+    /**
+     * @param array $params
+     * @return mixed VirtualWallets list
+     * @throws B2BinpayException
+     */
+    public function getVirtualWallets(array $params = [])
+    {
+        $url = $this->api->getVirtualWalletsUrl(null, $params);
+
+        $response = $this->api->sendRequest('get', $url, $params);
+
+        return $response;
+    }
+
+    /**
+     * @param int $virtualWalletId
+     * @return mixed VirtualWallet
+     * @throws B2BinpayException
+     */
+    public function getVirtualWallet(int $virtualWalletId)
+    {
+        $url = $this->api->getVirtualWalletsUrl($virtualWalletId);
+
+        $response = $this->api->sendRequest('get', $url);
+
+        return $response->data;
+    }
+
+    /**
+     * @param int $virtualWalletId
+     * @param string $amount
+     * @param string $currency
+     * @param string $address
+     * @param int $uniqueId
+     * @param string|null $trackingId
+     * @param string|null $callbackUrl
+     * @param string|null $message
+     * @param boolean $with_fee
+     * @return mixed Withdrawal
+     */
+    public function createWithdrawal(
+        int $virtualWalletId,
+        string $amount,
+        string $currency,
+        string $address,
+        int $uniqueId,
+        string $trackingId = null,
+        string $callbackUrl = null,
+        string $message = null,
+        bool $with_fee = false
+    ) {        
+        $iso = $this->currency->getIso($currency);
+        $url = $this->api->getNewWithdrawalUrl();
+
+        $amountFactory = $this->amountFactory->create($amount, $iso);
+
+        $params = [
+            'form_params' => [
+                'amount' => $amountFactory->getPowed(),
+                'virtual_wallet_id' => $virtualWalletId,
+                'address' => $address,
+                'currency' => $iso,
+                'unique_id' => $uniqueId,
+                'tracking_id' => $trackingId,
+                'pow' => $amountFactory->getPrecision(),
+                'callback_url' => $callbackUrl,
+                'message' => $message,
+                'with_fee' => $with_fee
+            ]
+        ];
+
+        $response = $this->api->sendRequest('post', $url, $params);
+
+        return $response->data;
+    }
+
+    /**
+     * @param array $params
+     * @return mixed Withdrawals list
+     * @throws B2BinpayException
+     */
+    public function getWithdrawals(array $params = [])
+    {
+        $url = $this->api->getWithdrawalsUrl(null, $params);
+
+        $response = $this->api->sendRequest('get', $url, $params);
+
+        return $response;
+    }
+
+    /**
+     * @param int $withdrawalId
+     * @return mixed Withdrawal
+     * @throws B2BinpayException
+     */
+    public function getWithdrawal(int $withdrawalId)
+    {
+        $url = $this->api->getWithdrawalsUrl($withdrawalId);
+
+        $response = $this->api->sendRequest('get', $url);
+
+        return $response->data;
+    }
+
+    /**
+     * @param array $params
+     * @return mixed Transfers list
+     * @throws B2BinpayException
+     */
+    public function getTransfers(array $params = [])
+    {
+        $url = $this->api->getTransfersUrl(null, $params);
+
+        $response = $this->api->sendRequest('get', $url, $params);
+
+        return $response;
+    }
+
+    /**
+     * @param int $transferlId
+     * @return mixed Transfer
+     * @throws B2BinpayException
+     */
+    public function getTransfer(int $transferlId)
+    {
+        $url = $this->api->getTransfersUrl($transferlId);
+
+        $response = $this->api->sendRequest('get', $url);
+
+        return $response->data;
+    }
+
+    /**
+     * @param string $time
+     * @param string $sign
+     * @return boolean
+     */
+    public function verifySign(string $time, string $sign): bool
+    {
+        $verify = $this->api->genSignString($time);
+
+        return password_verify($verify, $sign);
+    }
+
 }

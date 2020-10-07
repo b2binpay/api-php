@@ -15,16 +15,64 @@ class Currency
     const MAX_PRECISION = 18;
 
     private static $list = [
+        156 => [
+            'iso' => 156,
+            'alpha' => 'CNY',
+            'name' => 'Chinese yuan',
+            'precision' => 2
+        ],
+        344 => [
+            'iso' => 344,
+            'alpha' => 'HKD',
+            'name' => 'Hong Kong dollar',
+            'precision' => 2
+        ],
+        392 => [
+            'iso' => 392,
+            'alpha' => 'JPY',
+            'name' => 'Japanese yen',
+            'precision' => 2
+        ],
+        398 => [
+            'iso' => 398,
+            'alpha' => 'KZT',
+            'name' => 'Tenge',
+            'precision' => 2
+        ],
+        643 => [
+            'iso' => 643,
+            'alpha' => 'RUB',
+            'name' => 'Russian ruble',
+            'precision' => 2
+        ],
+        826 => [
+            'iso' => 826,
+            'alpha' => 'GBP',
+            'name' => 'Pound Sterling',
+            'precision' => 2
+        ],
         840 => [
             'iso' => 840,
             'alpha' => 'USD',
             'name' => 'US Dollar',
             'precision' => 2
         ],
+        933 => [
+            'iso' => 933,
+            'alpha' => 'BYN',
+            'name' => 'Belarusian Ruble',
+            'precision' => 2
+        ],
         978 => [
             'iso' => 978,
             'alpha' => 'EUR',
             'name' => 'Euro',
+            'precision' => 2
+        ],
+        980 => [
+            'iso' => 980,
+            'alpha' => 'UAH',
+            'name' => 'Ukrainian hryvnia',
             'precision' => 2
         ],
         1000 => [
@@ -75,29 +123,127 @@ class Currency
             'name' => 'NEM',
             'precision' => 6
         ],
-        2000 => [
-            'iso' => 2000,
-            'alpha' => 'B2BX',
-            'name' => 'B2BX',
-            'precision' => 18
+        1018 => [
+            'iso' => 1018,
+            'alpha' => 'ADA',
+            'name' => 'Cardano',
+            'precision' => 6
+        ],
+        1019 => [
+            'iso' => 1019,
+            'alpha' => 'DOGE',
+            'name' => 'Dogecoin',
+            'precision' => 8
+        ],
+        1020 => [
+            'iso' => 1020,
+            'alpha' => 'ZEC',
+            'name' => 'Zcash',
+            'precision' => 8
+        ],
+        1021 => [
+            'iso' => 1021,
+            'alpha' => 'XLM',
+            'name' => 'Stellar',
+            'precision' => 7
+        ],
+        1022 => [
+            'iso' => 1022,
+            'alpha' => 'EOS',
+            'name' => 'EOS',
+            'precision' => 4
+        ],
+        1026 => [
+            'iso' => 1026,
+            'alpha' => 'TRX',
+            'name' => 'TRON',
+            'precision' => 6
         ],
         2005 => [
             'iso' => 2005,
             'alpha' => 'USDT',
             'name' => 'Tether USD',
-            'precision' => 8
+            'precision' => 8,
+            'node' => [
+                'usdt-omni',
+                'usdt-eth'
+            ]
         ],
         2006 => [
             'iso' => 2006,
             'alpha' => 'EURT',
             'name' => 'Tether EUR',
-            'precision' => 8
+            'precision' => 8,
+            'node' => [
+                'eurt-omni',
+                'eurt-eth'
+            ]
         ],
         2014 => [
             'iso' => 2014,
             'alpha' => 'NEO',
             'name' => 'NEO',
             'precision' => 3
+        ],
+        2021 => [
+            'iso' => 2021,
+            'alpha' => 'PAX',
+            'name' => 'PAX',
+            'precision' => 18,
+            'node' => [
+                'pax-eth'
+            ]
+        ],
+        2022 => [
+            'iso' => 2022,
+            'alpha' => 'TUSD',
+            'name' => 'TrueUSD',
+            'precision' => 18,
+            'node' => [
+                'tusd-eth'
+            ]
+        ],
+        2023 => [
+            'iso' => 2023,
+            'alpha' => 'GUSD',
+            'name' => 'Gemini dollar',
+            'precision' => 2,
+            'node' => [
+                'gusd-eth'
+            ]
+        ],
+        2024 => [
+            'iso' => 2024,
+            'alpha' => 'USDC',
+            'name' => 'USD//Coin',
+            'precision' => 6,
+            'node' => [
+                'usdc-eth'
+            ]
+        ],
+        2025 => [
+            'iso' => 2025,
+            'alpha' => 'BNB',
+            'name' => 'Binance Coin',
+            'precision' => 8
+        ],
+        2068 => [
+            'iso' => 2068,
+            'alpha' => 'DAI',
+            'name' => 'Dai Stablecoin',
+            'precision' => 18,
+            'node' => [
+                'dai-eth'
+            ]
+        ],
+        2077 => [
+            'iso' => 2077,
+            'alpha' => 'BUSD',
+            'name' => 'Binance USD',
+            'precision' => 18,
+            'node' => [
+                'busd-eth'
+            ]
         ]
     ];
 
@@ -126,12 +272,14 @@ class Currency
         $iso = array_reduce(
             self::$list,
             function ($carry, $item) use ($alpha) {
-                if ($item['alpha'] === $alpha) {
+               $nodeList = isset($item['node']) ? $item['node'] : [];
+               $nodeList = array_map('strtoupper', $nodeList);
+
+                if ($item['alpha'] === $alpha || in_array($alpha, $nodeList)) {
                     $carry = $item['iso'];
                 }
                 return (int)$carry;
-            },
-            array()
+            }
         );
 
         if (empty($iso)) {

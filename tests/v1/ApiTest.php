@@ -5,6 +5,7 @@ namespace B2Binpay\Tests\v1;
 
 use B2Binpay\Request;
 use B2Binpay\v1\Api;
+use B2Binpay\Exception\UnknownValueException;
 use B2Binpay\Exception\UpdateTokenException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -21,7 +22,10 @@ class ApiTest extends TestCase
      */
     protected $request;
 
-    public function setUp()
+    private $currencyAlpha;
+    private $unknownCurrencyAlpha;
+
+    public function setUp(): void
     {
         $this->request = $this->createMock(Request::class);
 
@@ -31,9 +35,12 @@ class ApiTest extends TestCase
             $this->request,
             true
         );
+
+        $this->currencyAlpha = getenv('CURRENCY_ALPHA');
+        $this->unknownCurrencyAlpha = getenv('UNKNOWN_CURRENCY_ALPHA');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->api = null;
         $this->request = null;
@@ -53,15 +60,15 @@ class ApiTest extends TestCase
 
     public function testGetNewBillUrl()
     {
-        $node = $this->api->getNode(1000);
+        $node = $this->api->getNode($this->currencyAlpha);
         $this->assertEquals($this->getNode(), $node);
 
         $this->api->setTesting(true);
-        $url = $this->api->getNewBillUrl(1000);
+        $url = $this->api->getNewBillUrl($this->currencyAlpha);
         $this->assertEquals($this->api::TEST_NODE . $this->api::URI_BILLS, $url);
 
         $this->api->setTesting(false);
-        $url = $this->api->getNewBillUrl(1000);
+        $url = $this->api->getNewBillUrl($this->currencyAlpha);
         $this->assertEquals($node . $this->api::URI_BILLS, $url);
     }
 
@@ -119,11 +126,11 @@ class ApiTest extends TestCase
     {
         $this->api->setTesting(true);
         $url = $this->api->getRatesUrl();
-        $this->assertEquals($this->api::GW_TEST . $this->api::URI_DEPOSIT, $url);
+        $this->assertEquals($this->api::GW_TEST . $this->api::URI_RATES_DEPOSIT, $url);
 
         $this->api->setTesting(false);
         $url = $this->api->getRatesUrl();
-        $this->assertEquals($this->api::GW_PRODUCTION . $this->api::URI_DEPOSIT, $url);
+        $this->assertEquals($this->api::GW_PRODUCTION . $this->api::URI_RATES_DEPOSIT, $url);
     }
 
     public function testSendRequestUpdateToken()
@@ -148,14 +155,12 @@ class ApiTest extends TestCase
         $this->assertEquals($newToken, $token);
     }
 
-    /**
-     * @expectedException \B2Binpay\Exception\UnknownValueException
-     */
     public function testGetNodeUnknownValue()
     {
-        $this->api->getNode(9999);
+        $this->expectException(UnknownValueException::class);
+        $this->api->getNode($this->unknownCurrencyAlpha);
     }
-    
+
     private function getAuthBasic()
     {
         return getenv('AUTH_BASIC');
@@ -163,6 +168,6 @@ class ApiTest extends TestCase
 
     private function getNode()
     {
-        return getenv('NODE_BTC');
+        return getenv('NODE');
     }
 }

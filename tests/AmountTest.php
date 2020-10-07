@@ -20,7 +20,7 @@ class AmountTest extends TestCase
      */
     private $currency;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->currency = $this->createMock(Currency::class);
         $this->amount = new Amount($this->currency);
@@ -31,7 +31,7 @@ class AmountTest extends TestCase
             ->willReturn(8);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->amount = null;
         $this->currency = null;

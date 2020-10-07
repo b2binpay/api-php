@@ -13,10 +13,10 @@ interface ApiInterface
     /**
      * @param string $method
      * @param string $url
-     * @param array|null $params
+     * @param array $params
      * @return mixed
      */
-    public function sendRequest(string $method, string $url, array $params = null);
+    public function sendRequest(string $method, string $url, array $params = []);
 
     /**
      * @return string
@@ -29,18 +29,6 @@ interface ApiInterface
     public function getAccessToken(): string;
 
     /**
-     * @param int|null $bill
-     * @return string
-     */
-    public function getBillsUrl(int $bill = null): string;
-
-    /**
-     * @param int $iso
-     * @return string
-     */
-    public function getNewBillUrl(int $iso): string;
-
-    /**
      * @param string|null $rateType = 'deposit' or 'withdraw'
      * @return string
      */
@@ -51,4 +39,51 @@ interface ApiInterface
      * @return string
      */
     public function getWalletsUrl(int $wallet = null): string;
+
+    /**
+     * @param int|null $bill
+     * @return string
+     */
+    public function getBillsUrl(int $bill = null): string;
+
+    /**
+     * @param string $currency
+     * @return string
+     */
+    public function getNewBillUrl(string $currency): string;
+
+    /**
+     * @param int|null $transactionId
+     * @return string
+     */
+    public function getTransactionsUrl(int $transactionId = null): string;
+
+    /**
+     * @param int|null $virtualWalletId
+     * @return string
+     */
+    public function getVirtualWalletsUrl(int $virtualWalletId = null): string;
+
+    /**
+     * @return string
+     */
+    public function getNewWithdrawalUrl(): string;
+
+    /**
+     * @param int|null $withdrawalId
+     * @return string
+     */
+    public function getWithdrawalsUrl(int $withdrawalId = null): string;
+
+    /**
+     * @param int|null $transferlId
+     * @return string
+     */
+    public function getTransfersUrl(int $transferlId = null): string;
+
+    /**
+     * @param string $time
+     * @return string
+     */
+    public function genSignString(string $time): string;
 }

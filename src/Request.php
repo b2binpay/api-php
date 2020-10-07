@@ -36,21 +36,22 @@ class Request
      * @param array|null $params
      * @return mixed
      */
-    public function send(string $token, string $method, string $url, array $params = null)
+    public function send(string $token, string $method, string $url, array $params = [])
     {
         $header = [
             'Authorization' => 'Bearer ' . $token
         ];
 
-        $request = [
+        $_request = [
             'headers' => $header,
-            'form_params' => $params,
             'http_errors' => false
         ];
 
+        $request = array_merge($_request, $params);
+
         $response = $this->execute($method, $url, $request);
 
-        return $response->data;
+        return $response;
     }
 
     /**
