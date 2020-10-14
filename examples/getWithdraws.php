@@ -41,7 +41,7 @@ $withdrawsParam = [
                 // 'amount' => 'gte', // Withdraws will be filter whose amount is more than or equal to $withdrawsParam['query]['filter']['amount'];
 //                 'created' => 'bt', // Date of creation between $withdrawsParam['query]['filter']['created']
             ],
-            'sort' => '-id', // Reverse sorting by ID field, defaul: id
+            'sort' => '-id', // Reverse sorting by ID field, default: id
             'pagesize' => 50, // Maximum results per page 250, default: 20
             'page' => 1
         ]

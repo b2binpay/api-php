@@ -3,6 +3,5 @@ build/
 vendor/
 examples/callback.txt
 .env
-composer.lock
 /.phpunit.cache
 .phpunit.result.cache

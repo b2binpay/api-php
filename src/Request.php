@@ -49,9 +49,7 @@ class Request
 
         $request = array_merge($_request, $params);
 
-        $response = $this->execute($method, $url, $request);
-
-        return $response;
+        return $this->execute($method, $url, $request);
     }
 
     /**

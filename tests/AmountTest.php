@@ -88,7 +88,7 @@ class AmountTest extends TestCase
         $this->assertSame($expect, $this->amount->getValue());
     }
 
-    public function getPowedDataProvider()
+    public function getPoweredDataProvider()
     {
         return [
             [
@@ -114,18 +114,18 @@ class AmountTest extends TestCase
     }
 
     /**
-     * @dataProvider getPowedDataProvider
+     * @dataProvider getPoweredDataProvider
      * @param array $amount
      * @param array $expect
      */
-    public function testGetPowedAndPrecision(array $amount, array $expect)
+    public function testGetPoweredAndPrecision(array $amount, array $expect)
     {
         list($amountSum, $amountPow, $amountIso) = $amount;
-        list($expectPowed, $expectPrecision) = $expect;
+        list($expectPowered, $expectPrecision) = $expect;
 
         $this->amount->set($amountSum, $amountPow, $amountIso);
 
-        $this->assertSame($expectPowed, $this->amount->getPowed());
+        $this->assertSame($expectPowered, $this->amount->getPowered());
         $this->assertSame($expectPrecision, $this->amount->getPrecision());
     }
 
@@ -198,7 +198,7 @@ class AmountTest extends TestCase
         $this->amount->set($amountSum, $amountPow, $amountIso);
         $rateObj->set($rateSum, $ratePow, $rateIso);
 
-        $result = $this->amount->convert($rateObj, $precision)->getPowed();
+        $result = $this->amount->convert($rateObj, $precision)->getPowered();
         $this->assertSame($expect, $result);
     }
 
@@ -241,7 +241,7 @@ class AmountTest extends TestCase
 
         $this->amount->set($amountSum, $amountPow, $amountIso);
 
-        $result = $this->amount->percentage($percent)->getPowed();
+        $result = $this->amount->percentage($percent)->getPowered();
         $this->assertEquals($expect, $result);
     }
 }

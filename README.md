@@ -25,6 +25,12 @@ or by editing `composer.json`:
         }
     }
 ```
+## Local installation
+```bash
+    $ composer install --no-dev
+    $ cp .env.example .env
+```
+
 
 ## Support currencies
 
@@ -47,7 +53,7 @@ or by editing `composer.json`:
 | TRX | TRON | [TRON](https://tron.network) |
 | TUSD-ETH | TrueUSD | Ethereum, [Stablecoin](https://etherscan.io/token/0x0000000000085d4780B73119b644AE5ecd22b376) |
 | USDC-ETH | USD Coin | Ethereum, [Stablecoin](https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48) |
-| USDT-ETH | Tether | Ethereum, [Stablecoin](USDT) |
+| USDT-ETH | Tether | Ethereum, [Stablecoin](https://etherscan.io/address/0xdac17f958d2ee523a2206206994597c13d831ec7) |
 | USDT-OMNI | Tether | OMNI, [Stablecoin](https://www.omniexplorer.info/asset/31) |
 | XEM | NEM | [NEM](https://www.nem.io) |
 | XLM | Stellar | [Stellar](https://www.stellar.org) |
@@ -57,7 +63,7 @@ or by editing `composer.json`:
 
 ## Getting started
 
-See example code with comments in [examples/](examples/)
+See examples with comments in [examples/README.md](examples/README.md)
 
 ### Create Provider instance
 
@@ -145,7 +151,7 @@ Now you can provide `$amount` variable as a second parameter for `createBill()` 
 
 You can add some markup to the existing amount.
 
-Set _10%_ markup for current amount:
+Set _10%_ markup for the current amount:
 
 ```php
 $amount = $provider->addMarkup($amount, 'CURRENCY', 10);
@@ -267,7 +273,7 @@ Withdraw callback request will contain the following data:
 }
 ```
 
-### Create a withdraw
+### Create a withdrawal
 
 _From a virtual wallet, you can make withdrawals to any blockchain, for this you need to specify ADDRESS and CURRENCY_.
 
@@ -307,8 +313,6 @@ $bill = $provider->createWithdrawal(
 | -1 | Expired |
 | 1 | Created |
 | 2 | Paid |
-| 3 | Holded |
-| 4 | Closed |
 
 ### List of transactions statuses
 

@@ -14,6 +14,9 @@ class Currency
 {
     const MAX_PRECISION = 18;
 
+    /**
+     * @var array[]
+     */
     private static $list = [
         156 => [
             'iso' => 156,

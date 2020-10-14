@@ -47,18 +47,19 @@ class Provider
         Currency $currency = null,
         AmountFactory $amountFactory = null,
         ApiInterface $api = null
-    ) {
+    )
+    {
         $this->currency = $currency ?? new Currency();
         $this->amountFactory = $amountFactory ?? new AmountFactory($this->currency);
 
         $request = ($client) ? new Request($client) : null;
 
         $this->api = $api ?? new Api(
-            $authKey,
-            $authSecret,
-            $request,
-            $testing
-        );
+                $authKey,
+                $authSecret,
+                $request,
+                $testing
+            );
     }
 
     /**
@@ -105,7 +106,8 @@ class Provider
         string $currencyFrom,
         string $currencyTo,
         array $rates = null
-    ): string {
+    ): string
+    {
         $isoFrom = $this->currency->getIso($currencyFrom);
         $isoTo = $this->currency->getIso($currencyTo);
 
@@ -173,7 +175,8 @@ class Provider
         string $successUrl = null,
         string $errorUrl = null,
         string $address = null
-    ) {        
+    )
+    {
         $iso = $this->currency->getIso($currency);
         $url = $this->api->getNewBillUrl($currency);
 
@@ -181,7 +184,7 @@ class Provider
 
         $params = [
             'form_params' => [
-                'amount' => $amountFactory->getPowed(),
+                'amount' => $amountFactory->getPowered(),
                 'wallet' => $walletId,
                 'pow' => $amountFactory->getPrecision(),
                 'lifetime' => $lifetime,
@@ -207,9 +210,7 @@ class Provider
     {
         $url = $this->api->getBillsUrl(null, $params);
 
-        $response = $this->api->sendRequest('get', $url, $params);
-
-        return $response;
+        return $this->api->sendRequest('get', $url, $params);
     }
 
     /**
@@ -235,9 +236,7 @@ class Provider
     {
         $url = $this->api->getTransactionsUrl(null, $params);
 
-        $response = $this->api->sendRequest('get', $url, $params);
-
-        return $response;
+        return $this->api->sendRequest('get', $url, $params);
     }
 
     /**
@@ -263,9 +262,7 @@ class Provider
     {
         $url = $this->api->getVirtualWalletsUrl(null, $params);
 
-        $response = $this->api->sendRequest('get', $url, $params);
-
-        return $response;
+        return $this->api->sendRequest('get', $url, $params);
     }
 
     /**
@@ -304,7 +301,8 @@ class Provider
         string $callbackUrl = null,
         string $message = null,
         bool $with_fee = false
-    ) {        
+    )
+    {
         $iso = $this->currency->getIso($currency);
         $url = $this->api->getNewWithdrawalUrl();
 
@@ -312,7 +310,7 @@ class Provider
 
         $params = [
             'form_params' => [
-                'amount' => $amountFactory->getPowed(),
+                'amount' => $amountFactory->getPowered(),
                 'virtual_wallet_id' => $virtualWalletId,
                 'address' => $address,
                 'currency' => $iso,
@@ -339,9 +337,7 @@ class Provider
     {
         $url = $this->api->getWithdrawalsUrl(null, $params);
 
-        $response = $this->api->sendRequest('get', $url, $params);
-
-        return $response;
+        return $this->api->sendRequest('get', $url, $params);
     }
 
     /**
@@ -367,19 +363,17 @@ class Provider
     {
         $url = $this->api->getTransfersUrl(null, $params);
 
-        $response = $this->api->sendRequest('get', $url, $params);
-
-        return $response;
+        return $this->api->sendRequest('get', $url, $params);
     }
 
     /**
-     * @param int $transferlId
+     * @param int $transferId
      * @return mixed Transfer
      * @throws B2BinpayException
      */
-    public function getTransfer(int $transferlId)
+    public function getTransfer(int $transferId)
     {
-        $url = $this->api->getTransfersUrl($transferlId);
+        $url = $this->api->getTransfersUrl($transferId);
 
         $response = $this->api->sendRequest('get', $url);
 

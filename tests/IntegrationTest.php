@@ -281,7 +281,7 @@ class IntegrationTest extends TestCase
         $pow = $this->currencyPrecision;
         $uniqueId = time();
 
-        $trackungId = null;
+        $trackingId = null;
         $callbackUrl = null;
         $message = null;
         $withFee = true;
@@ -316,7 +316,7 @@ class IntegrationTest extends TestCase
             new Response(200, [], $responseWithdrawal)
         );
 
-        $withdrawal = $this->provider->createWithdrawal($virtualWalletId, $amount, $currency, $address, $uniqueId, $trackungId, $callbackUrl, $message, $withFee);
+        $withdrawal = $this->provider->createWithdrawal($virtualWalletId, $amount, $currency, $address, $uniqueId, $trackingId, $callbackUrl, $message, $withFee);
         $this->assertEquals($withdrawalStub->data, $withdrawal);
     }
 

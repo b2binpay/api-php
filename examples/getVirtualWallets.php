@@ -35,7 +35,7 @@ $virtualWalletsParam = [
             'filter_type' => [
 //                 'amount' => 'gte', // Virtual wallet will be filter whose amount is more than or equal to $virtualWalletsParam['query]['filter']['amount'];
             ],
-            'sort' => '-id', // Reverse sorting by ID field, defaul: id
+            'sort' => '-id', // Reverse sorting by ID field, default: id
             'pagesize' => 50, // Maximum results per page 250, default: 20
             'page' => 1
         ]

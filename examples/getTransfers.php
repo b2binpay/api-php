@@ -39,7 +39,7 @@ $transfersParam = [
             'filter_type' => [
                 // 'created' => 'bt', // Date of creation between $transfersParam['query]['filter']['created']
             ],
-            'sort' => '-id', // Reverse sorting by ID field, defaul: id
+            'sort' => '-id', // Reverse sorting by ID field, default: id
             'pagesize' => 50, // Maximum results per page 250, default: 20
             'page' => 1
         ]

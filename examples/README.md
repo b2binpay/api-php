@@ -6,7 +6,7 @@ Run in this folder:
 ```bash
 php -S localhost:8000
 ```
-and open url in your browser:
+then open url in your browser:
 ```
 http://localhost:8000/createBill.php
 ```

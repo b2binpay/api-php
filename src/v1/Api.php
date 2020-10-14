@@ -17,7 +17,6 @@ class Api implements ApiInterface
 {
     const GW_PRODUCTION = 'https://gw.b2binpay.com';
     const GW_TEST = 'https://gw-test.b2binpay.com';
-    const TEST_NODE = 'https://cr-test.b2binpay.com';
 
     const URI_LOGIN = '/api/login';
     const URI_BILLS = '/api/v1/pay/bills';
@@ -177,7 +176,7 @@ class Api implements ApiInterface
      */
     public function getNewBillUrl(string $currency): string
     {
-        $gateway = ($this->testing) ? self::TEST_NODE : $this->getNode($currency);
+        $gateway = ($this->testing) ? self::GW_TEST : $this->getNode($currency);
         $uri = self::URI_BILLS;
 
         return $gateway . $uri;
@@ -252,14 +251,14 @@ class Api implements ApiInterface
     }
 
     /**
-     * @param int|null $transferlId
+     * @param int|null $transferId
      * @return string
      */
-    public function getTransfersUrl(int $transferlId = null): string
+    public function getTransfersUrl(int $transferId = null): string
     {
         $uri = self::URI_TRANSFERS;
-        if (!empty($transferlId)) {
-            $uri .= '/' . $transferlId;
+        if (!empty($transferId)) {
+            $uri .= '/' . $transferId;
         }
 
         return $this->getGateway() . $uri;

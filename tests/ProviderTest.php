@@ -278,7 +278,7 @@ class ProviderTest extends TestCase
         $this->amountFactory->method('create')
             ->willReturn($this->amount);
 
-        $this->amount->method('getPowed')
+        $this->amount->method('getPowered')
             ->willReturn($amount);
 
         $this->amount->method('getPrecision')
@@ -389,7 +389,7 @@ class ProviderTest extends TestCase
         $this->amountFactory->method('create')
             ->willReturn($this->amount);
 
-        $this->amount->method('getPowed')
+        $this->amount->method('getPowered')
             ->willReturn($amount);
 
         $this->amount->method('getPrecision')

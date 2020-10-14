@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
 // Load Composer
-require_once dirname(__DIR__).'/vendor/autoload.php';
+require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 // Load params from Dotenv
 $dotenv = new Dotenv\Dotenv(dirname(__DIR__));
@@ -97,12 +97,10 @@ $callbackTest = $billCallbackTest;
 $callbackTest = json_decode($callbackTest, true);
 
 
-
 ///// <-- This code simulates generation of a signature by the server, DO NOT USE IN PROD
 $signString = $authKey . ":" . $authSecret . ":" . $callbackTest['sign']['time'];
 $callbackTest['sign']['hash'] = password_hash($signString, PASSWORD_BCRYPT);
 ///// END -->
-
 
 
 // If there is POST data, take them into work, if not, then demo
@@ -112,7 +110,7 @@ $json_string = json_encode($callback);
 // Write it to 'callback.txt'
 file_put_contents(
     'callback.txt',
-    date('Y/M/d H:i:s').PHP_EOL.$json_string.PHP_EOL.PHP_EOL,
+    date('Y/M/d H:i:s') . PHP_EOL . $json_string . PHP_EOL . PHP_EOL,
     FILE_APPEND | LOCK_EX
 );
 
@@ -142,8 +140,8 @@ if (!empty($callback['virtual_wallet_id'])) {
 // If not, then this is a deposit
 } else {
     // foreach ($callback['transactions'] AS $trx) {
-        // $hash = $trx['transaction'];
-        // ...
+    // $hash = $trx['transaction'];
+    // ...
     // }
 }
 

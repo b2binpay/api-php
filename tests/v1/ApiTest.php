@@ -65,7 +65,7 @@ class ApiTest extends TestCase
 
         $this->api->setTesting(true);
         $url = $this->api->getNewBillUrl($this->currencyAlpha);
-        $this->assertEquals($this->api::TEST_NODE . $this->api::URI_BILLS, $url);
+        $this->assertEquals($this->api::GW_TEST . $this->api::URI_BILLS, $url);
 
         $this->api->setTesting(false);
         $url = $this->api->getNewBillUrl($this->currencyAlpha);

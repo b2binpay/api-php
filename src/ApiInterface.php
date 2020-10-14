@@ -76,10 +76,10 @@ interface ApiInterface
     public function getWithdrawalsUrl(int $withdrawalId = null): string;
 
     /**
-     * @param int|null $transferlId
+     * @param int|null $transferId
      * @return string
      */
-    public function getTransfersUrl(int $transferlId = null): string;
+    public function getTransfersUrl(int $transferId = null): string;
 
     /**
      * @param string $time
