@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace B2Binpay\Tests;
 
+use B2Binpay\Exception\UpdateTokenException;
+use B2Binpay\Exception\ConnectionErrorException;
+use B2Binpay\Exception\EmptyResponseException;
+use B2Binpay\Exception\ServerApiException;
 use B2Binpay\Request;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
@@ -27,7 +31,7 @@ class RequestTest extends TestCase
      */
     protected $request;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->mockHandler = new MockHandler();
         $this->client = new Client([
@@ -46,14 +50,14 @@ class RequestTest extends TestCase
         );
 
         $token = $this->request->token($this->getUrl(), $this->getAuthBasic());
-        $this->assertSame($responseToken, $token);
+        $this->assertIsString($responseToken, $token);
     }
 
-    /**
-     * @expectedException \B2Binpay\Exception\ConnectionErrorException
-     */
     public function testUpdateAccessTokenConnectionError()
     {
+
+        $this->expectException(ConnectionErrorException::class);
+
         $this->mockHandler->append(
             new TransferException(
                 "Error"
@@ -63,11 +67,10 @@ class RequestTest extends TestCase
         $this->request->token($this->getUrl(), $this->getAuthBasic());
     }
 
-    /**
-     * @expectedException \B2Binpay\Exception\EmptyResponseException
-     */
     public function testUpdateAccessTokenEmptyResponse()
     {
+        $this->expectException(EmptyResponseException::class);
+
         $this->mockHandler->append(
             new Response(400, [], null)
         );
@@ -75,11 +78,10 @@ class RequestTest extends TestCase
         $this->request->token($this->getUrl(), $this->getAuthBasic());
     }
 
-    /**
-     * @expectedException \B2Binpay\Exception\ServerApiException
-     */
     public function testUpdateAccessTokenServerError()
     {
+        $this->expectException(ServerApiException::class);
+
         $response = json_encode([
             'code' => '-100500',
             'error' => 'SOME_API_ERROR'
@@ -103,17 +105,16 @@ class RequestTest extends TestCase
         );
 
         $return = $this->request->send($this->getToken(), 'get', '/');
-        $this->assertEquals($data1, $return);
+        $this->assertEquals($data1, $return->data);
 
         $return = $this->request->send($this->getToken(), 'post', '/');
-        $this->assertEquals($data2, $return);
+        $this->assertEquals($data2, $return->data);
     }
 
-    /**
-     * @expectedException \B2Binpay\Exception\ConnectionErrorException
-     */
     public function testSendConnectionError()
     {
+        $this->expectException(ConnectionErrorException::class);
+
         $this->mockHandler->append(
             new TransferException(
                 "Error"
@@ -123,11 +124,10 @@ class RequestTest extends TestCase
         $this->request->send($this->getToken(), 'get', 'alarm');
     }
 
-    /**
-     * @expectedException \B2Binpay\Exception\EmptyResponseException
-     */
     public function testSendEmptyResponse()
     {
+        $this->expectException(EmptyResponseException::class);
+
         $this->mockHandler->append(
             new Response(400, [], null)
         );
@@ -135,11 +135,10 @@ class RequestTest extends TestCase
         $this->request->send($this->getToken(), 'get', '/');
     }
 
-    /**
-     * @expectedException \B2Binpay\Exception\ServerApiException
-     */
     public function testSendServerError()
     {
+        $this->expectException(ServerApiException::class);
+
         $response = json_encode([
             'code' => '-100500',
             'error' => 'SOME_API_ERROR'
@@ -152,11 +151,10 @@ class RequestTest extends TestCase
         $this->request->send($this->getToken(), 'get', '/');
     }
 
-    /**
-     * @expectedException \B2Binpay\Exception\UpdateTokenException
-     */
     public function testUpdateTokenException()
     {
+        $this->expectException(UpdateTokenException::class);
+
         list($code, $error) = $this->request::ERROR_UPDATE_TOKEN;
 
         $responseUpdateToken = json_encode([

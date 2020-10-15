@@ -82,7 +82,7 @@ class Amount
     /**
      * @return string
      */
-    public function getPowed(): string
+    public function getPowered(): string
     {
         $pow = Decimal::fromInteger($this->precision);
         $mul = Decimal::fromInteger(10)->pow($pow);
