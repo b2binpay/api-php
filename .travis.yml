@@ -1,11 +1,14 @@
 language: php
 sudo: false
-install: composer install
+install: composer install --no-dev
 
 php:
+  - '7.0'
+  - '7.1'
   - '7.2'
   - '7.3'
-
+  - '7.4'
+  
 before_script:
   - mkdir -p build/logs
 
