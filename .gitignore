@@ -5,3 +5,4 @@ examples/callback.txt
 .env
 /.phpunit.cache
 .phpunit.result.cache
+composer.phar
