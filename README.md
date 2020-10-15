@@ -8,7 +8,7 @@ Accepting [Bitcoin](https://bitcoin.org/), [Bitcoin Cash](https://www.bitcoincas
 ## Requirements
 
 + [B2BinPay](https://b2binpay.com) account
-+ PHP >= 7.2 (For previous versions, please, use [version 1.1.0](https://github.com/b2binpay/api-php/tree/1.1.0))
++ PHP >= 7.1 (If you need 7.0, please, use [version 1.1.0](https://github.com/b2binpay/api-php/tree/1.1.0))
 + PHP extensions enabled: cURL, JSON
 
 ## Composer Installation
@@ -21,7 +21,7 @@ or by editing `composer.json`:
 ```
     {
         "require": {
-            "b2binpay/api-php": "^1.0"
+            "b2binpay/api-php": "^1.2"
         }
     }
 ```

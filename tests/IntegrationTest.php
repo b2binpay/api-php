@@ -18,22 +18,22 @@ class IntegrationTest extends TestCase
     /**
      * @var MockHandler
      */
-    protected $mockHandler;
+    protected $mock_handler;
 
     /**
      * @var Client
      */
     protected $client;
 
-    private $currencyIso;
-    private $currencyAlpha;
-    private $currencyPrecision;
+    private $currency_iso;
+    private $currency_alpha;
+    private $currency_precision;
 
     public function setUp(): void
     {
-        $this->mockHandler = new MockHandler();
+        $this->mock_handler = new MockHandler();
         $this->client = new Client([
-            'handler' => $this->mockHandler,
+            'handler' => $this->mock_handler,
         ]);
 
         $this->provider = new Provider(
@@ -43,14 +43,14 @@ class IntegrationTest extends TestCase
             $this->client
         );
 
-        $this->currencyIso = (int)getenv('CURRENCY_ISO');
-        $this->currencyAlpha = getenv('CURRENCY_ALPHA');
-        $this->currencyPrecision = (int)getenv('CURRENCY_PRECISION');
+        $this->currency_iso = (int)getenv('CURRENCY_ISO');
+        $this->currency_alpha = getenv('CURRENCY_ALPHA');
+        $this->currency_precision = (int)getenv('CURRENCY_PRECISION');
     }
 
     public function tearDown(): void
     {
-        $this->mockHandler = null;
+        $this->mock_handler = null;
         $this->client = null;
         $this->provider = null;
     }
@@ -62,13 +62,13 @@ class IntegrationTest extends TestCase
 
     public function testGetAuthToken()
     {
-        $responseToken = json_encode([
+        $response_token = json_encode([
             'token_type' => 'Bearer',
             'access_token' => 'mockToken'
         ]);
 
-        $this->mockHandler->append(
-            new Response(200, [], $responseToken)
+        $this->mock_handler->append(
+            new Response(200, [], $response_token)
         );
 
         $this->assertIsString('mockToken', $this->provider->getAuthToken());
@@ -76,21 +76,21 @@ class IntegrationTest extends TestCase
 
     public function testGetRates()
     {
-        $responseToken = json_encode([
+        $response_token = json_encode([
             'token_type' => 'Bearer',
             'access_token' => 'mockToken'
         ]);
 
-        $responseRates = '{ "data": [{ "rate": "deposit" }] }';
-        $ratesStub = json_decode($responseRates);
+        $response_rates = '{ "data": [{ "rate": "deposit" }] }';
+        $rates_stub = json_decode($response_rates);
 
-        $this->mockHandler->append(
-            new Response(200, [], $responseToken),
-            new Response(200, [], $responseRates)
+        $this->mock_handler->append(
+            new Response(200, [], $response_token),
+            new Response(200, [], $response_rates)
         );
 
         $rates = $this->provider->getRates('USD');
-        $this->assertEquals($ratesStub->data, $rates);
+        $this->assertEquals($rates_stub->data, $rates);
     }
 
     private function getRates()
@@ -154,9 +154,9 @@ class IntegrationTest extends TestCase
      */
     public function testConvertCurrency(array $amount, string $expect)
     {
-        list($sum, $currencyFrom, $currencyTo) = $amount;
+        list($sum, $currency_from, $currency_to) = $amount;
 
-        $amount = $this->provider->convertCurrency($sum, $currencyFrom, $currencyTo, $this->getRates()->data);
+        $amount = $this->provider->convertCurrency($sum, $currency_from, $currency_to, $this->getRates()->data);
         $this->assertSame($expect, $amount);
     }
 
@@ -194,63 +194,63 @@ class IntegrationTest extends TestCase
 
     public function testCreateBill()
     {
-        $responseToken = json_encode([
+        $response_token = json_encode([
             'token_type' => 'Bearer',
             'access_token' => 'mockToken'
         ]);
 
-        $walletId = 1;
+        $wallet_id = 1;
         $amount = '0.001';
-        $currency = $this->currencyAlpha;
+        $currency = $this->currency_alpha;
         $lifetime = 1200;
 
-        $responseBill = '{"data":{"id":13}}';
-        $billStub = json_decode($responseBill);
+        $response_bill = '{"data":{"id":13}}';
+        $bill_stub = json_decode($response_bill);
 
-        $this->mockHandler->append(
-            new Response(200, [], $responseToken),
-            new Response(200, [], $responseBill)
+        $this->mock_handler->append(
+            new Response(200, [], $response_token),
+            new Response(200, [], $response_bill)
         );
 
-        $bill = $this->provider->createBill($walletId, $amount, $currency, $lifetime);
-        $this->assertEquals($billStub->data, $bill);
+        $bill = $this->provider->createBill($wallet_id, $amount, $currency, $lifetime);
+        $this->assertEquals($bill_stub->data, $bill);
     }
 
     public function testGetBill()
     {
-        $responseToken = json_encode([
+        $response_token = json_encode([
             'token_type' => 'Bearer',
             'access_token' => 'mockToken'
         ]);
 
-        $billId = 1;
+        $bill_id = 1;
 
-        $responseBill = '{ "data": { "id": ' . $billId . ' } }';
+        $response_bill = '{ "data": { "id": ' . $bill_id . ' } }';
 
-        $billStub = json_decode($responseBill);
+        $bill_stub = json_decode($response_bill);
 
-        $this->mockHandler->append(
-            new Response(200, [], $responseToken),
-            new Response(200, [], $responseBill)
+        $this->mock_handler->append(
+            new Response(200, [], $response_token),
+            new Response(200, [], $response_bill)
         );
 
-        $bill = $this->provider->getBill($billId);
-        $this->assertEquals($billStub->data, $bill);
+        $bill = $this->provider->getBill($bill_id);
+        $this->assertEquals($bill_stub->data, $bill);
     }
 
     public function testGetBills()
     {
-        $responseToken = json_encode([
+        $response_token = json_encode([
             'token_type' => 'Bearer',
             'access_token' => 'mockToken'
         ]);
 
-        $responseBills = '{"data":[{"id":1},{"id":13}]}';
-        $billsStub = json_decode($responseBills);
+        $response_bills = '{"data":[{"id":1},{"id":13}]}';
+        $bills_stub = json_decode($response_bills);
 
-        $this->mockHandler->append(
-            new Response(200, [], $responseToken),
-            new Response(200, [], $responseBills)
+        $this->mock_handler->append(
+            new Response(200, [], $response_token),
+            new Response(200, [], $response_bills)
         );
 
         $params = [
@@ -263,33 +263,33 @@ class IntegrationTest extends TestCase
         ];
 
         $bills = $this->provider->getBills($params);
-        $this->assertEquals($billsStub, $bills);
+        $this->assertEquals($bills_stub, $bills);
     }
 
     public function testCreateWithdrawal()
     {
-        $responseToken = json_encode([
+        $response_token = json_encode([
             'token_type' => 'Bearer',
             'access_token' => 'mockToken'
         ]);
 
-        $virtualWalletId = 1;
+        $virtual_wallet_id = 1;
         $amount = '0.001';
-        $currency = $this->currencyAlpha;
+        $currency = $this->currency_alpha;
         $address = 'address';
-        $iso = $this->currencyIso;
-        $pow = $this->currencyPrecision;
+        $iso = $this->currency_iso;
+        $pow = $this->currency_precision;
         $uniqueId = time();
 
-        $trackingId = null;
-        $callbackUrl = null;
+        $tracking_id = null;
+        $callback_url = null;
         $message = null;
-        $withFee = true;
+        $with_fee = true;
 
-        $responseWithdrawal = '{
+        $response_withdrawal = '{
             "data": {
                     "id": 1,
-                    "virtual_wallet_id": ' . $virtualWalletId . ',
+                    "virtual_wallet_id": ' . $virtual_wallet_id . ',
                     "with_fee": true,
                     "created": "' . date('Y-m-d H:i:s') . '",
                     "address": "' . $address . '",
@@ -309,51 +309,51 @@ class IntegrationTest extends TestCase
                 }
             }';
 
-        $withdrawalStub = json_decode($responseWithdrawal);
+        $withdrawal_stub = json_decode($response_withdrawal);
 
-        $this->mockHandler->append(
-            new Response(200, [], $responseToken),
-            new Response(200, [], $responseWithdrawal)
+        $this->mock_handler->append(
+            new Response(200, [], $response_token),
+            new Response(200, [], $response_withdrawal)
         );
 
-        $withdrawal = $this->provider->createWithdrawal($virtualWalletId, $amount, $currency, $address, $uniqueId, $trackingId, $callbackUrl, $message, $withFee);
-        $this->assertEquals($withdrawalStub->data, $withdrawal);
+        $withdrawal = $this->provider->createWithdrawal($virtual_wallet_id, $amount, $currency, $address, $uniqueId, $tracking_id, $callback_url, $message, $with_fee);
+        $this->assertEquals($withdrawal_stub->data, $withdrawal);
     }
 
     public function testGetWithdrawal()
     {
-        $responseToken = json_encode([
+        $response_token = json_encode([
             'token_type' => 'Bearer',
             'access_token' => 'mockToken'
         ]);
 
-        $withdrawalId = 1;
+        $withdrawal_id = 1;
 
-        $responseWithdrawal = '{"data": { "id": ' . $withdrawalId . ' } }';
-        $withdrawalStub = json_decode($responseWithdrawal);
+        $response_withdrawal = '{"data": { "id": ' . $withdrawal_id . ' } }';
+        $withdrawal_stub = json_decode($response_withdrawal);
 
-        $this->mockHandler->append(
-            new Response(200, [], $responseToken),
-            new Response(200, [], $responseWithdrawal)
+        $this->mock_handler->append(
+            new Response(200, [], $response_token),
+            new Response(200, [], $response_withdrawal)
         );
 
-        $withdrawal = $this->provider->getWithdrawal($withdrawalId);
-        $this->assertEquals($withdrawalStub->data, $withdrawal);
+        $withdrawal = $this->provider->getWithdrawal($withdrawal_id);
+        $this->assertEquals($withdrawal_stub->data, $withdrawal);
     }
 
     public function testGetWithdrawals()
     {
-        $responseToken = json_encode([
+        $response_token = json_encode([
             'token_type' => 'Bearer',
             'access_token' => 'mockToken'
         ]);
 
-        $responseWithdrawals = '{ "data": [{ "id": 1 }, { "id": 13 }] }';
-        $withdrawalsStub = json_decode($responseWithdrawals);
+        $response_withdrawals = '{ "data": [{ "id": 1 }, { "id": 13 }] }';
+        $withdrawals_stub = json_decode($response_withdrawals);
 
-        $this->mockHandler->append(
-            new Response(200, [], $responseToken),
-            new Response(200, [], $responseWithdrawals)
+        $this->mock_handler->append(
+            new Response(200, [], $response_token),
+            new Response(200, [], $response_withdrawals)
         );
 
         $params = [
@@ -366,43 +366,43 @@ class IntegrationTest extends TestCase
         ];
 
         $withdrawals = $this->provider->getWithdrawals($params);
-        $this->assertEquals($withdrawalsStub, $withdrawals);
+        $this->assertEquals($withdrawals_stub, $withdrawals);
     }
 
     public function testGetTransfer()
     {
-        $responseToken = json_encode([
+        $response_token = json_encode([
             'token_type' => 'Bearer',
             'access_token' => 'mockToken'
         ]);
 
-        $transferId = 1;
+        $transfer_id = 1;
 
-        $responseTransfer = '{ "data": { "id": ' . $transferId . ' } }';
-        $transferStub = json_decode($responseTransfer);
+        $response_transfer = '{ "data": { "id": ' . $transfer_id . ' } }';
+        $transfer_stub = json_decode($response_transfer);
 
-        $this->mockHandler->append(
-            new Response(200, [], $responseToken),
-            new Response(200, [], $responseTransfer)
+        $this->mock_handler->append(
+            new Response(200, [], $response_token),
+            new Response(200, [], $response_transfer)
         );
 
-        $transfer = $this->provider->getTransfer($transferId);
-        $this->assertEquals($transferStub->data, $transfer);
+        $transfer = $this->provider->getTransfer($transfer_id);
+        $this->assertEquals($transfer_stub->data, $transfer);
     }
 
     public function testGetTransfers()
     {
-        $responseToken = json_encode([
+        $response_token = json_encode([
             'token_type' => 'Bearer',
             'access_token' => 'mockToken'
         ]);
 
-        $responseTransfers = '{ "data": [{ "id": 1 }, { "id": 13 }] }';
-        $transfersStub = json_decode($responseTransfers);
+        $response_transfers = '{ "data": [{ "id": 1 }, { "id": 13 }] }';
+        $transfers_stub = json_decode($response_transfers);
 
-        $this->mockHandler->append(
-            new Response(200, [], $responseToken),
-            new Response(200, [], $responseTransfers)
+        $this->mock_handler->append(
+            new Response(200, [], $response_token),
+            new Response(200, [], $response_transfers)
         );
 
         $params = [
@@ -415,43 +415,43 @@ class IntegrationTest extends TestCase
         ];
 
         $transfers = $this->provider->getTransfers($params);
-        $this->assertEquals($transfersStub, $transfers);
+        $this->assertEquals($transfers_stub, $transfers);
     }
 
     public function testGetTransaction()
     {
-        $responseToken = json_encode([
+        $response_token = json_encode([
             'token_type' => 'Bearer',
             'access_token' => 'mockToken'
         ]);
 
-        $transactionId = 1;
+        $transaction_id = 1;
 
-        $responseTransaction = '{ "data": { "id": ' . $transactionId . ' } }';
-        $transferStub = json_decode($responseTransaction);
+        $response_transaction = '{ "data": { "id": ' . $transaction_id . ' } }';
+        $transfer_stub = json_decode($response_transaction);
 
-        $this->mockHandler->append(
-            new Response(200, [], $responseToken),
-            new Response(200, [], $responseTransaction)
+        $this->mock_handler->append(
+            new Response(200, [], $response_token),
+            new Response(200, [], $response_transaction)
         );
 
-        $transaction = $this->provider->getTransaction($transactionId);
-        $this->assertEquals($transferStub->data, $transaction);
+        $transaction = $this->provider->getTransaction($transaction_id);
+        $this->assertEquals($transfer_stub->data, $transaction);
     }
 
     public function testGetTransactions()
     {
-        $responseToken = json_encode([
+        $response_token = json_encode([
             'token_type' => 'Bearer',
             'access_token' => 'mockToken'
         ]);
 
-        $responseTransactions = '{ "data": [{ "id": 1 }, { "id": 13 }] }';
-        $transactionsStub = json_decode($responseTransactions);
+        $response_transactions = '{ "data": [{ "id": 1 }, { "id": 13 }] }';
+        $transactions_stub = json_decode($response_transactions);
 
-        $this->mockHandler->append(
-            new Response(200, [], $responseToken),
-            new Response(200, [], $responseTransactions)
+        $this->mock_handler->append(
+            new Response(200, [], $response_token),
+            new Response(200, [], $response_transactions)
         );
 
         $params = [
@@ -464,7 +464,56 @@ class IntegrationTest extends TestCase
         ];
 
         $transactions = $this->provider->getTransactions($params);
-        $this->assertEquals($transactionsStub, $transactions);
+        $this->assertEquals($transactions_stub, $transactions);
+    }
+
+    public function testGetVirtualWallet()
+    {
+        $response_token = json_encode([
+            'token_type' => 'Bearer',
+            'access_token' => 'mockToken'
+        ]);
+
+        $virtual_wallet_id = 1;
+
+        $response_virtual_wallet = '{ "data": { "id": ' . $virtual_wallet_id . ' } }';
+        $virtual_wallet_stub = json_decode($response_virtual_wallet);
+
+        $this->mock_handler->append(
+            new Response(200, [], $response_token),
+            new Response(200, [], $response_virtual_wallet)
+        );
+
+        $virtual_wallet = $this->provider->getVirtualWallet($virtual_wallet_id);
+        $this->assertEquals($virtual_wallet_stub->data, $virtual_wallet);
+    }
+
+    public function testGetVirtualWallets()
+    {
+        $response_token = json_encode([
+            'token_type' => 'Bearer',
+            'access_token' => 'mockToken'
+        ]);
+
+        $response_virtual_wallets = '{ "data": [{ "id": 1 }, { "id": 13 }] }';
+        $virtual_wallets_stub = json_decode($response_virtual_wallets);
+
+        $this->mock_handler->append(
+            new Response(200, [], $response_token),
+            new Response(200, [], $response_virtual_wallets)
+        );
+
+        $params = [
+            'filter' => [
+                'created' => date('Y-m-d 00:00:00,Y-m-d 23:59:59')
+            ],
+            'filter_type' => [
+                'created' => 'gt'
+            ]
+        ];
+
+        $virtual_wallets = $this->provider->getVirtualWallets($params);
+        $this->assertEquals($virtual_wallets_stub, $virtual_wallets);
     }
 
     /**

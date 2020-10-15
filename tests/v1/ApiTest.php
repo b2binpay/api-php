@@ -22,8 +22,8 @@ class ApiTest extends TestCase
      */
     protected $request;
 
-    private $currencyAlpha;
-    private $unknownCurrencyAlpha;
+    private $currency_alpha;
+    private $unknown_currency_alpha;
 
     public function setUp(): void
     {
@@ -36,8 +36,8 @@ class ApiTest extends TestCase
             true
         );
 
-        $this->currencyAlpha = getenv('CURRENCY_ALPHA');
-        $this->unknownCurrencyAlpha = getenv('UNKNOWN_CURRENCY_ALPHA');
+        $this->currency_alpha = getenv('CURRENCY_ALPHA');
+        $this->unknown_currency_alpha = getenv('UNKNOWN_CURRENCY_ALPHA');
     }
 
     public function tearDown(): void
@@ -51,6 +51,12 @@ class ApiTest extends TestCase
         $this->assertEquals($this->getAuthBasic(), $this->api->genAuthBasic());
     }
 
+    public function testGenSignString()
+    {
+        $time = (string)1;
+        $this->assertEquals($this->getSignString(), $this->api->genSignString($time));
+    }
+
     public function testSetAndGetAccessToken()
     {
         $token = 'mockToken';
@@ -60,15 +66,15 @@ class ApiTest extends TestCase
 
     public function testGetNewBillUrl()
     {
-        $node = $this->api->getNode($this->currencyAlpha);
+        $node = $this->api->getNode($this->currency_alpha);
         $this->assertEquals($this->getNode(), $node);
 
         $this->api->setTesting(true);
-        $url = $this->api->getNewBillUrl($this->currencyAlpha);
+        $url = $this->api->getNewBillUrl($this->currency_alpha);
         $this->assertEquals($this->api::GW_TEST . $this->api::URI_BILLS, $url);
 
         $this->api->setTesting(false);
-        $url = $this->api->getNewBillUrl($this->currencyAlpha);
+        $url = $this->api->getNewBillUrl($this->currency_alpha);
         $this->assertEquals($node . $this->api::URI_BILLS, $url);
     }
 
@@ -158,12 +164,17 @@ class ApiTest extends TestCase
     public function testGetNodeUnknownValue()
     {
         $this->expectException(UnknownValueException::class);
-        $this->api->getNode($this->unknownCurrencyAlpha);
+        $this->api->getNode($this->unknown_currency_alpha);
     }
 
     private function getAuthBasic()
     {
         return getenv('AUTH_BASIC');
+    }
+
+    private function getSignString(): string
+    {
+        return getenv('SIGN_STRING');
     }
 
     private function getNode()

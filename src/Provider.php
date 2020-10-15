@@ -80,13 +80,13 @@ class Provider
 
     /**
      * @param string $currency
-     * @param string $rateType = 'deposit' or 'withdraw'
+     * @param string $rate_type = 'deposit' or 'withdraw'
      * @return mixed Rates
      * @throws B2BinpayException
      */
-    public function getRates(string $currency = 'USD', string $rateType = 'deposit')
+    public function getRates(string $currency = 'USD', string $rate_type = 'deposit')
     {
-        $url = $this->api->getRatesUrl($rateType) . strtolower($currency);
+        $url = $this->api->getRatesUrl($rate_type) . strtolower($currency);
 
         $response = $this->api->sendRequest('get', $url);
 
@@ -240,13 +240,13 @@ class Provider
     }
 
     /**
-     * @param int $transactionId
+     * @param int $transaction_id
      * @return mixed Transaction
      * @throws B2BinpayException
      */
-    public function getTransaction(int $transactionId)
+    public function getTransaction(int $transaction_id)
     {
-        $url = $this->api->getTransactionsUrl($transactionId);
+        $url = $this->api->getTransactionsUrl($transaction_id);
 
         $response = $this->api->sendRequest('get', $url);
 
@@ -266,13 +266,13 @@ class Provider
     }
 
     /**
-     * @param int $virtualWalletId
+     * @param int $virtual_wallet_id
      * @return mixed VirtualWallet
      * @throws B2BinpayException
      */
-    public function getVirtualWallet(int $virtualWalletId)
+    public function getVirtualWallet(int $virtual_wallet_id)
     {
-        $url = $this->api->getVirtualWalletsUrl($virtualWalletId);
+        $url = $this->api->getVirtualWalletsUrl($virtual_wallet_id);
 
         $response = $this->api->sendRequest('get', $url);
 
@@ -280,7 +280,7 @@ class Provider
     }
 
     /**
-     * @param int $virtualWalletId
+     * @param int $virtual_wallet_id
      * @param string $amount
      * @param string $currency
      * @param string $address
@@ -292,7 +292,7 @@ class Provider
      * @return mixed Withdrawal
      */
     public function createWithdrawal(
-        int $virtualWalletId,
+        int $virtual_wallet_id,
         string $amount,
         string $currency,
         string $address,
@@ -311,7 +311,7 @@ class Provider
         $params = [
             'form_params' => [
                 'amount' => $amountFactory->getPowered(),
-                'virtual_wallet_id' => $virtualWalletId,
+                'virtual_wallet_id' => $virtual_wallet_id,
                 'address' => $address,
                 'currency' => $iso,
                 'unique_id' => $uniqueId,
@@ -341,13 +341,13 @@ class Provider
     }
 
     /**
-     * @param int $withdrawalId
+     * @param int $withdrawal_id
      * @return mixed Withdrawal
      * @throws B2BinpayException
      */
-    public function getWithdrawal(int $withdrawalId)
+    public function getWithdrawal(int $withdrawal_id)
     {
-        $url = $this->api->getWithdrawalsUrl($withdrawalId);
+        $url = $this->api->getWithdrawalsUrl($withdrawal_id);
 
         $response = $this->api->sendRequest('get', $url);
 
@@ -367,13 +367,13 @@ class Provider
     }
 
     /**
-     * @param int $transferId
+     * @param int $transfer_id
      * @return mixed Transfer
      * @throws B2BinpayException
      */
-    public function getTransfer(int $transferId)
+    public function getTransfer(int $transfer_id)
     {
-        $url = $this->api->getTransfersUrl($transferId);
+        $url = $this->api->getTransfersUrl($transfer_id);
 
         $response = $this->api->sendRequest('get', $url);
 
