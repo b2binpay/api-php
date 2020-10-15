@@ -27,7 +27,7 @@ class ProviderTest extends TestCase
     /**
      * @var AmountFactory | MockObject
      */
-    protected $amountFactory;
+    protected $amount_factory;
 
     /**
      * @var Amount | MockObject
@@ -39,17 +39,17 @@ class ProviderTest extends TestCase
      */
     protected $api;
 
-    private $currencyIso;
-    private $currencyAlpha;
-    private $currencyPrecision;
+    private $currency_iso;
+    private $currency_alpha;
+    private $currency_precision;
 
-    private $signTime;
-    private $signHash;
+    private $sign_time;
+    private $sign_hash;
 
     public function setUp(): void
     {
         $this->currency = $this->createMock(Currency::class);
-        $this->amountFactory = $this->createMock(AmountFactory::class);
+        $this->amount_factory = $this->createMock(AmountFactory::class);
         $this->amount = $this->createMock(Amount::class);
         $this->api = $this->createMock(ApiInterface::class);
 
@@ -59,23 +59,23 @@ class ProviderTest extends TestCase
             true,
             null,
             $this->currency,
-            $this->amountFactory,
+            $this->amount_factory,
             $this->api
         );
 
-        $this->currencyIso = (int)getenv('CURRENCY_ISO');
-        $this->currencyAlpha = getenv('CURRENCY_ALPHA');
-        $this->currencyPrecision = (int)getenv('CURRENCY_PRECISION');
+        $this->currency_iso = (int)getenv('CURRENCY_ISO');
+        $this->currency_alpha = getenv('CURRENCY_ALPHA');
+        $this->currency_precision = (int)getenv('CURRENCY_PRECISION');
 
-        $this->signTime = getenv('SIGN_TIME');
-        $this->signHash = getenv('SIGN_HASH');
+        $this->sign_time = getenv('SIGN_TIME');
+        $this->sign_hash = getenv('SIGN_HASH');
     }
 
     public function tearDown(): void
     {
         $this->provider = null;
         $this->currency = null;
-        $this->amountFactory = null;
+        $this->amount_factory = null;
         $this->amount = null;
         $this->api = null;
     }
@@ -99,7 +99,7 @@ class ProviderTest extends TestCase
     public function testGetRates()
     {
         $url = 'url';
-        $currency = strtolower($this->currencyAlpha);
+        $currency = strtolower($this->currency_alpha);
 
         $responseRates = '{ "data": [{ "rate": "deposit" }] }';
         $ratesStub = json_decode($responseRates);
@@ -124,13 +124,13 @@ class ProviderTest extends TestCase
         $this->currency->method('getIso')
             ->willReturn(1);
 
-        $this->amountFactory->method('create')
+        $this->amount_factory->method('create')
             ->willReturn($this->amount);
 
         $this->amount->method('getValue')
             ->willReturn('value');
 
-        $amount = $this->provider->convertCurrency('1', $this->currencyAlpha, 'USD', []);
+        $amount = $this->provider->convertCurrency('1', $this->currency_alpha, 'USD', []);
         $this->assertSame('value', $amount);
     }
 
@@ -161,7 +161,7 @@ class ProviderTest extends TestCase
         $rateAmount = $this->createMock(Amount::class);
         $resultAmount = $this->createMock(Amount::class);
 
-        $this->amountFactory->expects($this->exactly(2))
+        $this->amount_factory->expects($this->exactly(2))
             ->method('create')
             ->withConsecutive(
                 [$this->equalTo($sum), $this->equalTo($isoFrom)],
@@ -189,14 +189,14 @@ class ProviderTest extends TestCase
 
     public function testIncorrectRatesException()
     {
-        $currencyTo = $this->currencyAlpha;
+        $currencyTo = $this->currency_alpha;
 
         $this->expectException(IncorrectRatesException::class);
 
         $this->currency->method('getIso')
             ->will($this->onConsecutiveCalls(1, 2));
 
-        $this->amountFactory->method('create')
+        $this->amount_factory->method('create')
             ->willReturn($this->amount);
 
         $this->provider->convertCurrency('1', 'USD', $currencyTo, []);
@@ -205,7 +205,7 @@ class ProviderTest extends TestCase
     public function testAddMarkup()
     {
         $sum = '0.001';
-        $iso = $this->currencyIso;
+        $iso = $this->currency_iso;
         $percent = 10;
         $result = '0.0011';
 
@@ -214,7 +214,7 @@ class ProviderTest extends TestCase
 
         $resultAmount = $this->createMock(Amount::class);
 
-        $this->amountFactory->expects($this->once())
+        $this->amount_factory->expects($this->once())
             ->method('create')
             ->with(
                 $this->equalTo($sum),
@@ -242,12 +242,12 @@ class ProviderTest extends TestCase
         $responseBill = '{ "data": { "id": "1" } }';
         $billStub = json_decode($responseBill);
 
-        $currency = $this->currencyAlpha;
-        $iso = $this->currencyIso;
+        $currency = $this->currency_alpha;
+        $iso = $this->currency_iso;
 
         $walletId = 1;
         $amount = '123';
-        $precision = $this->currencyPrecision;
+        $precision = $this->currency_precision;
         $lifetime = 1200;
         $trackingId = 'trackingId';
         $callbackUrl = 'callbackUrl';
@@ -275,7 +275,7 @@ class ProviderTest extends TestCase
         $this->api->method('getNewBillUrl')
             ->willReturn($url);
 
-        $this->amountFactory->method('create')
+        $this->amount_factory->method('create')
             ->willReturn($this->amount);
 
         $this->amount->method('getPowered')
@@ -352,15 +352,15 @@ class ProviderTest extends TestCase
         $responseWithdrawal = '{ "data": { "id": "1" } }';
         $withdrawalStub = json_decode($responseWithdrawal);
 
-        $currency = $this->currencyAlpha;
-        $iso = $this->currencyIso;
+        $currency = $this->currency_alpha;
+        $iso = $this->currency_iso;
 
         $virtualWalletId = 1;
         $amount = '123';
         $address = 'address';
         $uniqueId = time();
         $trackingId = 'trackingId';
-        $pow = $this->currencyPrecision;
+        $pow = $this->currency_precision;
         $callbackUrl = 'callbackUrl';
         $message = 'message';
         $with_fee = false;
@@ -386,7 +386,7 @@ class ProviderTest extends TestCase
         $this->api->method('getNewWithdrawalUrl')
             ->willReturn($url);
 
-        $this->amountFactory->method('create')
+        $this->amount_factory->method('create')
             ->willReturn($this->amount);
 
         $this->amount->method('getPowered')
@@ -530,6 +530,30 @@ class ProviderTest extends TestCase
         $transactions = $this->provider->getTransactions($params);
         $this->assertEquals($response, $transactions);
     }
+    
+    public function testGetTransaction()
+    {
+        $url = 'url';
+
+        $transaction_id = 1;
+
+        $response_transaction = '{ "data": { "id": "' . $transaction_id . '" } }';
+        $transaction_stub = json_decode($response_transaction);
+
+        $this->api->method('getTransactionsUrl')
+            ->willReturn($url);
+
+        $this->api->expects($this->once())
+            ->method('sendRequest')
+            ->with(
+                $this->equalTo('get'),
+                $this->equalTo($url)
+            )
+            ->willReturn($transaction_stub);
+
+        $transaction = $this->provider->getTransaction($transaction_id);
+        $this->assertEquals($transaction_stub->data, $transaction);
+    }
 
     public function testGetVirtualWallets()
     {
@@ -557,16 +581,16 @@ class ProviderTest extends TestCase
         $this->assertEquals($response, $virtual_wallets);
     }
 
-    public function testGetTransaction()
+    public function testGetVirtualWallet()
     {
         $url = 'url';
 
-        $transactionId = 1;
+        $virtual_wallet_id = 1;
 
-        $responseTransaction = '{ "data": { "id": "' . $transactionId . '" } }';
-        $transactionStub = json_decode($responseTransaction);
+        $response_virtual_wallet = '{ "data": { "id": "' . $virtual_wallet_id . '" } }';
+        $virtual_wallet_stub = json_decode($response_virtual_wallet);
 
-        $this->api->method('getTransactionsUrl')
+        $this->api->method('getVirtualWalletsUrl')
             ->willReturn($url);
 
         $this->api->expects($this->once())
@@ -575,20 +599,20 @@ class ProviderTest extends TestCase
                 $this->equalTo('get'),
                 $this->equalTo($url)
             )
-            ->willReturn($transactionStub);
+            ->willReturn($virtual_wallet_stub);
 
-        $transaction = $this->provider->getTransaction($transactionId);
-        $this->assertEquals($transactionStub->data, $transaction);
+        $virtual_wallet= $this->provider->getVirtualWallet($virtual_wallet_id);
+        $this->assertEquals($virtual_wallet_stub->data, $virtual_wallet);
     }
 
     public function testVerifySign()
     {
-        $singString = getenv('AUTH_KEY') . ":" . getenv('AUTH_SECRET') . ":" . $this->signTime;
+        $singString = getenv('AUTH_KEY') . ":" . getenv('AUTH_SECRET') . ":" . $this->sign_time;
 
         $this->api->method('genSignString')
             ->willReturn($singString);
 
-        $checkSign = $this->provider->verifySign($this->signTime, $this->signHash);
+        $checkSign = $this->provider->verifySign($this->sign_time, $this->sign_hash);
         $this->assertTrue($checkSign);
     }
 

@@ -425,9 +425,9 @@ class IntegrationTest extends TestCase
             'access_token' => 'mockToken'
         ]);
 
-        $transactionId = 1;
+        $transaction_id = 1;
 
-        $responseTransaction = '{ "data": { "id": ' . $transactionId . ' } }';
+        $responseTransaction = '{ "data": { "id": ' . $transaction_id . ' } }';
         $transferStub = json_decode($responseTransaction);
 
         $this->mockHandler->append(
@@ -435,7 +435,7 @@ class IntegrationTest extends TestCase
             new Response(200, [], $responseTransaction)
         );
 
-        $transaction = $this->provider->getTransaction($transactionId);
+        $transaction = $this->provider->getTransaction($transaction_id);
         $this->assertEquals($transferStub->data, $transaction);
     }
 
