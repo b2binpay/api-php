@@ -145,13 +145,13 @@ class Api implements ApiInterface
     }
 
     /**
-     * @param string $rateType = 'deposit' or 'withdraw'
+     * @param string $rate_type = 'deposit' or 'withdraw'
      * @return string
      */
-    public function getRatesUrl(string $rateType = 'deposit'): string
+    public function getRatesUrl(string $rate_type = 'deposit'): string
     {
         $url = $this->getGateway();
-        $url .= ('deposit' === $rateType) ? self::URI_RATES_DEPOSIT : self::URI_RATES_WITHDRAW;
+        $url .= ('deposit' === $rate_type) ? self::URI_RATES_DEPOSIT : self::URI_RATES_WITHDRAW;
 
         return $url;
     }
@@ -199,28 +199,28 @@ class Api implements ApiInterface
     }
 
     /**
-     * @param int|null $transactionId
+     * @param int|null $transaction_id
      * @return string
      */
-    public function getTransactionsUrl(int $transactionId = null): string
+    public function getTransactionsUrl(int $transaction_id = null): string
     {
         $uri = self::URI_TRANSACTIONS;
-        if (!empty($transactionId)) {
-            $uri .= '/' . $transactionId;
+        if (!empty($transaction_id)) {
+            $uri .= '/' . $transaction_id;
         }
 
         return $this->getGateway() . $uri;
     }
 
     /**
-     * @param int|null $virtualWalletId
+     * @param int|null $virtual_wallet_id
      * @return string
      */
-    public function getVirtualWalletsUrl(int $virtualWalletId = null): string
+    public function getVirtualWalletsUrl(int $virtual_wallet_id = null): string
     {
         $uri = self::URI_VIRTUAL_WALLETS;
-        if (!empty($virtualWalletId)) {
-            $uri .= '/' . $virtualWalletId;
+        if (!empty($virtual_wallet_id)) {
+            $uri .= '/' . $virtual_wallet_id;
         }
 
         return $this->getGateway() . $uri;
@@ -237,28 +237,28 @@ class Api implements ApiInterface
     }
 
     /**
-     * @param int|null $withdrawalId
+     * @param int|null $withdrawal_id
      * @return string
      */
-    public function getWithdrawalsUrl(int $withdrawalId = null): string
+    public function getWithdrawalsUrl(int $withdrawal_id = null): string
     {
         $uri = self::URI_WITHDRAWS;
-        if (!empty($withdrawalId)) {
-            $uri .= '/' . $withdrawalId;
+        if (!empty($withdrawal_id)) {
+            $uri .= '/' . $withdrawal_id;
         }
 
         return $this->getGateway() . $uri;
     }
 
     /**
-     * @param int|null $transferId
+     * @param int|null $transfer_id
      * @return string
      */
-    public function getTransfersUrl(int $transferId = null): string
+    public function getTransfersUrl(int $transfer_id = null): string
     {
         $uri = self::URI_TRANSFERS;
-        if (!empty($transferId)) {
-            $uri .= '/' . $transferId;
+        if (!empty($transfer_id)) {
+            $uri .= '/' . $transfer_id;
         }
 
         return $this->getGateway() . $uri;

@@ -531,6 +531,32 @@ class ProviderTest extends TestCase
         $this->assertEquals($response, $transactions);
     }
 
+    public function testGetVirtualWallets()
+    {
+        $url = 'url';
+        $params = [
+            'query' => [
+                'currency' => 1
+            ]
+        ];
+
+        $response = [1, 2];
+
+        $this->api->method('getVirtualWalletsUrl')
+            ->willReturn($url);
+
+        $this->api->expects($this->once())
+            ->method('sendRequest')
+            ->with(
+                $this->equalTo('get'),
+                $this->equalTo($url)
+            )
+            ->willReturn($response);
+
+        $virtual_wallets = $this->provider->getVirtualWallets($params);
+        $this->assertEquals($response, $virtual_wallets);
+    }
+
     public function testGetTransaction()
     {
         $url = 'url';
@@ -557,7 +583,7 @@ class ProviderTest extends TestCase
 
     public function testVerifySign()
     {
-        $singString = getenv('AUTH_KEY').":".getenv('AUTH_SECRET').":".$this->signTime;
+        $singString = getenv('AUTH_KEY') . ":" . getenv('AUTH_SECRET') . ":" . $this->signTime;
 
         $this->api->method('genSignString')
             ->willReturn($singString);

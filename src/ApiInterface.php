@@ -29,10 +29,10 @@ interface ApiInterface
     public function getAccessToken(): string;
 
     /**
-     * @param string|null $rateType = 'deposit' or 'withdraw'
+     * @param string|null $rate_type = 'deposit' or 'withdraw'
      * @return string
      */
-    public function getRatesUrl(string $rateType = 'deposit'): string;
+    public function getRatesUrl(string $rate_type = 'deposit'): string;
 
     /**
      * @param int|null $wallet
@@ -53,16 +53,16 @@ interface ApiInterface
     public function getNewBillUrl(string $currency): string;
 
     /**
-     * @param int|null $transactionId
+     * @param int|null $transaction_id
      * @return string
      */
-    public function getTransactionsUrl(int $transactionId = null): string;
+    public function getTransactionsUrl(int $transaction_id = null): string;
 
     /**
-     * @param int|null $virtualWalletId
+     * @param int|null $virtual_wallet_id
      * @return string
      */
-    public function getVirtualWalletsUrl(int $virtualWalletId = null): string;
+    public function getVirtualWalletsUrl(int $virtual_wallet_id = null): string;
 
     /**
      * @return string
@@ -70,16 +70,16 @@ interface ApiInterface
     public function getNewWithdrawalUrl(): string;
 
     /**
-     * @param int|null $withdrawalId
+     * @param int|null $withdrawal_id
      * @return string
      */
-    public function getWithdrawalsUrl(int $withdrawalId = null): string;
+    public function getWithdrawalsUrl(int $withdrawal_id = null): string;
 
     /**
-     * @param int|null $transferId
+     * @param int|null $transfer_id
      * @return string
      */
-    public function getTransfersUrl(int $transferId = null): string;
+    public function getTransfersUrl(int $transfer_id = null): string;
 
     /**
      * @param string $time
