@@ -36,7 +36,7 @@ class ApiTest extends TestCase
             true
         );
 
-        $this->currencyAlpha = getenv('CURRENCY_ALPHA');
+        $this->currency_alpha = getenv('CURRENCY_ALPHA');
         $this->unknownCurrencyAlpha = getenv('UNKNOWN_CURRENCY_ALPHA');
     }
 
@@ -60,15 +60,15 @@ class ApiTest extends TestCase
 
     public function testGetNewBillUrl()
     {
-        $node = $this->api->getNode($this->currencyAlpha);
+        $node = $this->api->getNode($this->currency_alpha);
         $this->assertEquals($this->getNode(), $node);
 
         $this->api->setTesting(true);
-        $url = $this->api->getNewBillUrl($this->currencyAlpha);
+        $url = $this->api->getNewBillUrl($this->currency_alpha);
         $this->assertEquals($this->api::GW_TEST . $this->api::URI_BILLS, $url);
 
         $this->api->setTesting(false);
-        $url = $this->api->getNewBillUrl($this->currencyAlpha);
+        $url = $this->api->getNewBillUrl($this->currency_alpha);
         $this->assertEquals($node . $this->api::URI_BILLS, $url);
     }
 

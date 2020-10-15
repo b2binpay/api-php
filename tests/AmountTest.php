@@ -81,9 +81,9 @@ class AmountTest extends TestCase
      */
     public function testGetValue(array $amount, string $expect)
     {
-        list($amountSum, $amountPow, $amountIso) = $amount;
+        list($amount_sum, $amount_pow, $amount_iso) = $amount;
 
-        $this->amount->set($amountSum, $amountPow, $amountIso);
+        $this->amount->set($amount_sum, $amount_pow, $amount_iso);
 
         $this->assertSame($expect, $this->amount->getValue());
     }
@@ -120,13 +120,13 @@ class AmountTest extends TestCase
      */
     public function testGetPoweredAndPrecision(array $amount, array $expect)
     {
-        list($amountSum, $amountPow, $amountIso) = $amount;
-        list($expectPowered, $expectPrecision) = $expect;
+        list($amount_sum, $amount_pow, $amount_iso) = $amount;
+        list($expect_powered, $expect_precision) = $expect;
 
-        $this->amount->set($amountSum, $amountPow, $amountIso);
+        $this->amount->set($amount_sum, $amount_pow, $amount_iso);
 
-        $this->assertSame($expectPowered, $this->amount->getPowered());
-        $this->assertSame($expectPrecision, $this->amount->getPrecision());
+        $this->assertSame($expect_powered, $this->amount->getPowered());
+        $this->assertSame($expect_precision, $this->amount->getPrecision());
     }
 
     public function convertDataProvider()
@@ -190,15 +190,15 @@ class AmountTest extends TestCase
      */
     public function testConvert(array $amount, array $rate, int $precision, string $expect)
     {
-        $rateObj = new Amount($this->currency);
+        $rate_obj = new Amount($this->currency);
         
-        list($amountSum, $amountPow, $amountIso) = $amount;
-        list($rateSum, $ratePow, $rateIso) = $rate;
+        list($amount_sum, $amount_pow, $amount_iso) = $amount;
+        list($rate_sum, $rate_pow, $rateIso) = $rate;
 
-        $this->amount->set($amountSum, $amountPow, $amountIso);
-        $rateObj->set($rateSum, $ratePow, $rateIso);
+        $this->amount->set($amount_sum, $amount_pow, $amount_iso);
+        $rate_obj->set($rate_sum, $rate_pow, $rateIso);
 
-        $result = $this->amount->convert($rateObj, $precision)->getPowered();
+        $result = $this->amount->convert($rate_obj, $precision)->getPowered();
         $this->assertSame($expect, $result);
     }
 
@@ -237,9 +237,9 @@ class AmountTest extends TestCase
      */
     public function testPercentage(array $amount, int $percent, string $expect)
     {
-        list($amountSum, $amountPow, $amountIso) = $amount;
+        list($amount_sum, $amount_pow, $amount_iso) = $amount;
 
-        $this->amount->set($amountSum, $amountPow, $amountIso);
+        $this->amount->set($amount_sum, $amount_pow, $amount_iso);
 
         $result = $this->amount->percentage($percent)->getPowered();
         $this->assertEquals($expect, $result);

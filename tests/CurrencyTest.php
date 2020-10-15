@@ -14,22 +14,22 @@ class CurrencyTest extends TestCase
      */
     private $currency;
 
-    private $currencyIso;
-    private $currencyAlpha;
-    private $currencyName;
-    private $currencyPrecision;
-    private $unknownCurrencyIso;
-    private $unknownCurrencyAlpha;
+    private $currency_iso;
+    private $currency_alpha;
+    private $currency_name;
+    private $currency_precision;
+    private $unknown_currency_iso;
+    private $unknown_currency_alpha;
 
     public function setUp(): void
     {
         $this->currency = new Currency();
-        $this->currencyIso = (int)getenv('CURRENCY_ISO');
-        $this->currencyAlpha = getenv('CURRENCY_ALPHA');
-        $this->currencyName = getenv('CURRENCY_NAME');
-        $this->currencyPrecision = (int)getenv('CURRENCY_PRECISION');
-        $this->unknownCurrencyIso = (int)getenv('UNKNOWN_CURRENCY_ISO');
-        $this->unknownCurrencyAlpha = getenv('UNKNOWN_CURRENCY_ALPHA');
+        $this->currency_iso = (int)getenv('CURRENCY_ISO');
+        $this->currency_alpha = getenv('CURRENCY_ALPHA');
+        $this->currency_name = getenv('CURRENCY_NAME');
+        $this->currency_precision = (int)getenv('CURRENCY_PRECISION');
+        $this->unknown_currency_iso = (int)getenv('UNKNOWN_CURRENCY_ISO');
+        $this->unknown_currency_alpha = getenv('UNKNOWN_CURRENCY_ALPHA');
     }
 
     public function tearDown(): void
@@ -44,29 +44,29 @@ class CurrencyTest extends TestCase
 
     public function testGetAlpha()
     {
-        $this->assertSame($this->currencyAlpha, $this->currency->getAlpha($this->currencyIso));
+        $this->assertSame($this->currency_alpha, $this->currency->getAlpha($this->currency_iso));
     }
 
     public function testGetAlphaException()
     {
         $this->expectException(UnknownValueException::class);
-        $this->currency->getAlpha($this->unknownCurrencyIso);
+        $this->currency->getAlpha($this->unknown_currency_iso);
     }
 
     public function testGetIso()
     {
-        $this->assertSame($this->currencyIso, $this->currency->getIso($this->currencyAlpha));
+        $this->assertSame($this->currency_iso, $this->currency->getIso($this->currency_alpha));
     }
 
     public function testGetIsoException()
     {
         $this->expectException(UnknownValueException::class);
-        $this->currency->getIso($this->unknownCurrencyAlpha);
+        $this->currency->getIso($this->unknown_currency_alpha);
     }
 
     public function testGetPrecision()
     {
-        $this->assertSame($this->currencyPrecision, $this->currency->getPrecision($this->currencyIso));
+        $this->assertSame($this->currency_precision, $this->currency->getPrecision($this->currency_iso));
     }
 
     public function testGetPrecisionException()
@@ -77,12 +77,12 @@ class CurrencyTest extends TestCase
 
     public function testGetName()
     {
-        $this->assertSame($this->currencyName, $this->currency->getName($this->currencyIso));
+        $this->assertSame($this->currency_name, $this->currency->getName($this->currency_iso));
     }
 
     public function testGetNameException()
     {
         $this->expectException(UnknownValueException::class);
-        $this->currency->getName($this->unknownCurrencyIso);
+        $this->currency->getName($this->unknown_currency_iso);
     }
 }
