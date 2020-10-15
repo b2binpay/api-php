@@ -1,6 +1,7 @@
 ## Setup and run
 - Set **AUTH_KEY** and **AUTH_SECRET** in `.env` 
-- Change `$wallets` array in createBill.php to match your wallet IDs
+- Set **BTC**, **ETH** and **USDT-ETH** in `.env` to match your wallet IDs
+- Set **VW_ID** and **VW_CURRENCY** in `.env` to match your virtual wallet config
 
 Run in this folder:
 ```bash
@@ -15,7 +16,7 @@ response:
 stdClass Object
 (
     [id] => 18205
-    [url] => https://cr-test.b2binpay.com/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJCMkJDcnlwdG9QYXkiLCJzdWIiOjE4MjA1LCJpYXQiOjE2MDIwNjM5MDJ9.XD36a2jVxlc6LNmC5nUwZvoezFVoO9T2PtKasIkO5Mo
+    [url] => https://gw-test.b2binpay.com/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJCMkJDcnlwdG9QYXkiLCJzdWIiOjE4MjA1LCJpYXQiOjE2MDIwNjM5MDJ9.XD36a2jVxlc6LNmC5nUwZvoezFVoO9T2PtKasIkO5Mo
     [address] => 5f7d8e1eb8e6cccbd8ca962b80445df1f7f38c57759f0
     [created] => 2020-10-01 15:45:02
     [expired] => 

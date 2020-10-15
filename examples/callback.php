@@ -1,21 +1,8 @@
 <?php
-declare(strict_types=1);
-
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
-
-// Load Composer
-require_once dirname(__DIR__) . '/vendor/autoload.php';
-
-// Load params from Dotenv
-$dotenv = new Dotenv\Dotenv(dirname(__DIR__));
-$dotenv->load();
-
-$authKey = (string)getenv('AUTH_KEY');
-$authSecret = (string)getenv('AUTH_SECRET');
+require_once __DIR__ . '/config.php';
 
 // Callback with test data for the bill
-$billCallbackTest = '{
+$bill_callback_test = '{
   "id": "17282",
   "url": "https://gw-test.b2binpay.com/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJCMkJDcnlwdG9QYXkiLCJzdWIiOjE3MjgyLCJpYXQiOjE1OTk4MzM3MDN9.DTl8y50rQ3lmazkJIkMk3JAFo-TGt7_0QH5p_4ICSyQ",
   "address": "5f5b85106635aa26398dca6f47b49876cbaffbc9954f9",
@@ -69,7 +56,7 @@ $billCallbackTest = '{
 }';
 
 // Callback with test data for the withdrawal
-$withdrawalCallbackTest = '{
+$withdrawal_callback_test = '{
   "id": "1062",
   "virtual_wallet_id": "45",
   "with_fee": "0",
@@ -92,19 +79,19 @@ $withdrawalCallbackTest = '{
   }
 }';
 
-// Set data for callback $billCallbackTest or $withdrawalCallbackTest
-$callbackTest = $billCallbackTest;
-$callbackTest = json_decode($callbackTest, true);
+// Set data for callback $bill_callback_test or $withdrawal_callback_test
+$callback_test = $bill_callback_test;
+$callback_test = json_decode($callback_test, true);
 
 
 ///// <-- This code simulates generation of a signature by the server, DO NOT USE IN PROD
-$signString = $authKey . ":" . $authSecret . ":" . $callbackTest['sign']['time'];
-$callbackTest['sign']['hash'] = password_hash($signString, PASSWORD_BCRYPT);
+$signString = getAuthKey() . ":" . getAuthSecret() . ":" . $callback_test['sign']['time'];
+$callback_test['sign']['hash'] = password_hash($signString, PASSWORD_BCRYPT);
 ///// END -->
 
 
 // If there is POST data, take them into work, if not, then demo
-$callback = (!empty($_POST)) ? $_POST : $callbackTest;
+$callback = (!empty($_POST)) ? $_POST : $callback_test;
 
 $json_string = json_encode($callback);
 // Write it to 'callback.txt'
@@ -116,15 +103,15 @@ file_put_contents(
 
 // Create B2Binpay Provider object
 $provider = new B2Binpay\Provider(
-    $authKey,
-    $authSecret,
+    getAuthKey(),
+    getAuthSecret(),
     true // sandbox
 );
 
-$verifySign = $provider->verifySign($callback['sign']['time'], $callback['sign']['hash']);
+$verify_sign = $provider->verifySign($callback['sign']['time'], $callback['sign']['hash']);
 
 // A signature for each callback is generated every time a new one, a unique signature must be verified
-if (!$verifySign) {
+if (!$verify_sign) {
     header('HTTP/1.1 401 Unauthorized');
     exit();
 }

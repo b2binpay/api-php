@@ -1,39 +1,18 @@
 <?php
-declare(strict_types=1);
+require_once __DIR__ . '/config.php';
 
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
+// Select wallet and currency
+$virtual_wallet_id = getVwId();
+$virtual_wallet_currency = getVwCurrency();
 
-// Load Composer
-require_once dirname(__DIR__).'/vendor/autoload.php';
-
-// Load params from Dotenv
-$dotenv = new Dotenv\Dotenv(dirname(__DIR__));
-$dotenv->load();
-
-$authKey = (string)getenv('AUTH_KEY');
-$authSecret = (string)getenv('AUTH_SECRET');
-
-$baseCurrency = (string)getenv('BASE_CURRENCY');
-
-
-
-// Simulate virtual wallets in your application, used to create an withdrawal
-$virtualWallets = [
-    1 => [
-        'id' => 45,
-        'currency' => 'usd'
-    ],
-    // ...
-];
-// Select wallet
-$virtualWallet = $virtualWallets[1];
-
-
+if (empty($virtual_wallet_id) || empty($virtual_wallet_currency)) {
+    echo '<pre>Please, set VW_ID and VW_CURRENCY variables in .env</pre>';
+    exit();
+}
 
 // Withdrawal Request
-$withdrawalRequest = [
-    'amount' => '1000.00', // Amount in USD
+$withdrawal_request = [
+    'amount' => '1000.00', // Amount in base currency
     'currency' => 'BTC', // Withdrawal in BTC
     'address' => 'Test872sjhfbw4jsgfuaTf4jhasdfg',
     'unique_id' => time(), // Any unique positive number not previously used
@@ -43,60 +22,64 @@ $withdrawalRequest = [
 
 // Generate callback Url from $_SERVER
 // $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http');
-// $withdrawalRequest['callback_url'] = $protocol.'://'.$_SERVER['HTTP_HOST'].'/callback.php';
+// $withdrawal_request['callback_url'] = $protocol.'://'.$_SERVER['HTTP_HOST'].'/callback.php';
 
 // Create B2Binpay Provider object
 $provider = new B2Binpay\Provider(
-        $authKey,
-        $authSecret,
-        true // sandbox
-    );
+    getAuthKey(),
+    getAuthSecret(),
+    true // sandbox
+);
 
-// Get actual Rates
-$rates = $provider->getRates($baseCurrency);
+// Get actual rates
+$rates = $provider->getRates($virtual_wallet_currency);
 
 // Convert currency
 $amount = $provider->convertCurrency(
-    $withdrawalRequest['amount'],
-    $baseCurrency,
-    $withdrawalRequest['currency'],
+    $withdrawal_request['amount'],
+    $virtual_wallet_currency,
+    $withdrawal_request['currency'],
     $rates
 );
 
 // Create Withdrawal
 $withdrawal = $provider->createWithdrawal(
-        $virtualWallet['id'],
-        $amount,
-        $withdrawalRequest['currency'],
-        $withdrawalRequest['address'],
-        $withdrawalRequest['unique_id'],
-        $withdrawalRequest['track_id'],
-        $withdrawalRequest['callback_url']
-    );
+    $virtual_wallet_id,
+    $amount,
+    $withdrawal_request['currency'],
+    $withdrawal_request['address'],
+    $withdrawal_request['unique_id'],
+    $withdrawal_request['track_id'],
+    $withdrawal_request['callback_url']
+);
 
- echo '<pre>';
- print_r($withdrawal);
- echo '</pre>';
+echo '<pre>';
+print_r($withdrawal);
+echo '</pre>';
 
-// stdClass Object
-// (
-//     [id] => 1072
-//     [virtual_wallet_id] => 45
-//     [with_fee] =>
-//     [created] => 2020-10-05 10:21:30
-//     [address] => Test872sjhfbw4jsgfuaTf4jhasdfg
-//     [message] =>
-//     [amount] => 9367000
-//     [fee] => NOT SET
-//     [pow] => 8
-//     [status] => 0
-//     [transaction] =>
-//     [tracking_id] =>
-//     [unique_id] => 1601893289
-//     [callback_url] =>
-//     [currency] => stdClass Object
-//     (
-//         [iso] => 1000
-//         [alpha] => BTC
-//     )
-// )
+/**
+ * @example
+ * stdClass Object
+ * (
+ * [id] => 1072
+ * [virtual_wallet_id] => 45
+ * [with_fee] =>
+ * [created] => 2020-10-05 10:21:30
+ * [address] => Test872sjhfbw4jsgfuaTf4jhasdfg
+ * [message] =>
+ * [amount] => 9367000
+ * [fee] => NOT SET
+ * [pow] => 8
+ * [status] => 0
+ * [transaction] =>
+ * [tracking_id] =>
+ * [unique_id] => 1601893289
+ * [callback_url] =>
+ * [currency] => stdClass Object
+ * (
+ * [iso] => 1000
+ * [alpha] => BTC
+ * )
+ * )
+ *
+ */
