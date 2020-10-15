@@ -1,6 +1,5 @@
 language: php
-sudo: false
-install: composer install --no-dev
+install: composer install
 
 php:
   - '7.0'
