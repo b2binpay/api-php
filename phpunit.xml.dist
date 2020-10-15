@@ -10,6 +10,7 @@
         <env name="GATEWAY" value="localhost"/>
         <env name="AUTH_KEY" value="a"/>
         <env name="AUTH_SECRET" value="b"/>
+        <env name="SIGN_STRING" value="a:b:1"/>
         <env name="AUTH_BASIC" value="YTpi"/>
         <env name="AUTH" value="Basic YTpi"/>
         <env name="CURRENCY_ISO" value="1000"/>

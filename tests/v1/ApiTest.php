@@ -22,8 +22,8 @@ class ApiTest extends TestCase
      */
     protected $request;
 
-    private $currencyAlpha;
-    private $unknownCurrencyAlpha;
+    private $currency_alpha;
+    private $unknown_currency_alpha;
 
     public function setUp(): void
     {
@@ -37,7 +37,7 @@ class ApiTest extends TestCase
         );
 
         $this->currency_alpha = getenv('CURRENCY_ALPHA');
-        $this->unknownCurrencyAlpha = getenv('UNKNOWN_CURRENCY_ALPHA');
+        $this->unknown_currency_alpha = getenv('UNKNOWN_CURRENCY_ALPHA');
     }
 
     public function tearDown(): void
@@ -49,6 +49,12 @@ class ApiTest extends TestCase
     public function testGenAuthBasic()
     {
         $this->assertEquals($this->getAuthBasic(), $this->api->genAuthBasic());
+    }
+
+    public function testGenSignString()
+    {
+        $time = (string)1;
+        $this->assertEquals($this->getSignString(), $this->api->genSignString($time));
     }
 
     public function testSetAndGetAccessToken()
@@ -158,12 +164,17 @@ class ApiTest extends TestCase
     public function testGetNodeUnknownValue()
     {
         $this->expectException(UnknownValueException::class);
-        $this->api->getNode($this->unknownCurrencyAlpha);
+        $this->api->getNode($this->unknown_currency_alpha);
     }
 
     private function getAuthBasic()
     {
         return getenv('AUTH_BASIC');
+    }
+
+    private function getSignString(): string
+    {
+        return getenv('SIGN_STRING');
     }
 
     private function getNode()
