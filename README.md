@@ -1,7 +1,11 @@
-
 # B2BinPay API client for PHP
 
-Accepting [Bitcoin](https://bitcoin.org/), [Bitcoin Cash](https://www.bitcoincash.org/), [Ethereum](https://www.ethereum.org/), [DASH](https://www.dash.org/), [Litecoin](https://litecoin.org/), [Monero](https://getmonero.org/), [NEO](https://neo.org), [NEM](https://nem.io/), [Ripple](https://ripple.com/), [Cardano](https://www.cardano.org/), [Dogecoin](https://dogecoin.com/), [Zcash](https://z.cash/), [Stellar](https://www.stellar.org/), [EOS](https://eos.io/), [TRON](https://tron.network/), [Binance Coin](https://www.binance.com/) and any ERC20 and stablecoin, NEO tokens in one place!
+Accepting [Bitcoin](https://bitcoin.org/), [Bitcoin Cash](https://www.bitcoincash.org/)
+, [Ethereum](https://www.ethereum.org/), [DASH](https://www.dash.org/), [Litecoin](https://litecoin.org/)
+, [Monero](https://getmonero.org/), [NEO](https://neo.org), [NEM](https://nem.io/), [Ripple](https://ripple.com/)
+, [Cardano](https://www.cardano.org/), [Dogecoin](https://dogecoin.com/), [Zcash](https://z.cash/)
+, [Stellar](https://www.stellar.org/), [EOS](https://eos.io/), [TRON](https://tron.network/)
+, [Binance Coin](https://www.binance.com/) and any ERC20 and stablecoin, NEO tokens in one place!
 
 [![Build Status](https://travis-ci.org/b2binpay/api-php.svg?branch=master)](https://travis-ci.org/b2binpay/api-php) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/b2binpay/api-php/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/b2binpay/api-php/?branch=master) [![Coverage Status](https://coveralls.io/repos/github/b2binpay/api-php/badge.svg?branch=master)](https://coveralls.io/github/b2binpay/api-php?branch=master)
 
@@ -13,24 +17,29 @@ Accepting [Bitcoin](https://bitcoin.org/), [Bitcoin Cash](https://www.bitcoincas
 
 ## Composer Installation
 
-The easiest way to install the B2BinPay API client is to require it with [Composer](http://getcomposer.org/doc/00-intro.md) through command-line:
+The easiest way to install the B2BinPay API client is to require it
+with [Composer](http://getcomposer.org/doc/00-intro.md) through command-line:
+
+```shell
+composer require b2binpay/api-php
 ```
-    $ composer require b2binpay/api-php
-```
+
 or by editing `composer.json`:
-```
+
+```json
     {
-        "require": {
-            "b2binpay/api-php": "^1.2"
-        }
-    }
+  "require": {
+    "b2binpay/api-php": "^1.2"
+  }
+}
 ```
+
 ## Local installation
+
 ```bash
     $ composer install --no-dev
     $ cp .env.example .env
 ```
-
 
 ## Support currencies
 
@@ -108,6 +117,7 @@ $bill = $provider->createBill(
         'ERROR_URL'
   );
 ```
+
 | Params | Description |
 | --- | --- |
 | WALLET_ID | (int) Each wallet is responsible for creating bill only in the currency assigned to it |
@@ -116,8 +126,10 @@ $bill = $provider->createBill(
 | LIFETIME | (int) Number in seconds that will set bill to expire from the current creation date |
 | TRACKING_ID | (string) _Optional_. Track for bill tracking. This value will be returned on callback |
 | CALLBACK_URL | (string) _Optional_. URL to which the callback will be sent |
-| SUCCESS_URL | (string) _Optional_. URL to which the user can be sent after successful payment, is used only on the payment page |
-| ERROR_URL | (string) _Optional_. URL to which the user can be sent after unsuccessful payment, is used only on the payment page |
+| SUCCESS_URL | (string) _
+Optional_. URL to which the user can be sent after successful payment, is used only on the payment page |
+| ERROR_URL | (string) _
+Optional_. URL to which the user can be sent after unsuccessful payment, is used only on the payment page |
 
 ### Convert currency
 
@@ -128,6 +140,7 @@ Get rates for _BASE_CURRENCY_:
 ```php
 $rates = $provider->getRates('BASE_CURRENCY', 'RATE_TYPE');
 ```
+
 | Params | Description |
 | --- | --- |
 | BASE_CURRENCY | (string) *Optional*. Currency to which the rates will be calculated. Default: USD |
@@ -138,14 +151,17 @@ Convert currency using actual rates:
 ```php
 $amount = $provider->convertCurrency('AMOUNT', 'BASE_CURRENCY', 'CURRENCY', $rates);
 ```
+
 | Params | Description |
 | --- | --- |
 | AMOUNT | (string) The amount in the currency to be converted |
 | BASE_CURRENCY | (string) The currency in which the amount is indicated  |
 | CURRENCY | (string) Currency in which you want to convert the amount |
-| $rates | (array) _Optional_. Current rates. If the parameter is not specified, then the rates will be requested again |
+| $rates | (array) _
+Optional_. Current rates. If the parameter is not specified, then the rates will be requested again |
 
-Now you can provide `$amount` variable as a second parameter for `createBill()` method to set an accurate amount of cryptocurrency.
+Now you can provide `$amount` variable as a second parameter for `createBill()` method to set an accurate amount of
+cryptocurrency.
 
 ### Add markup
 
@@ -156,6 +172,7 @@ Set _10%_ markup for the current amount:
 ```php
 $amount = $provider->addMarkup($amount, 'CURRENCY', 10);
 ```
+
 | Params | Description |
 | --- | --- |
 | $amount | (string) Amount to add markup |
@@ -164,8 +181,9 @@ $amount = $provider->addMarkup($amount, 'CURRENCY', 10);
 
 ### Callback
 
-Once bill status changed, our server can send a callback to your configured Callback URL. Also, you can specify Tracking ID, which will return with the callback to identify the exact order.
-To do that provide additional parameters to `createBill()` method:
+Once bill status changed, our server can send a callback to your configured Callback URL. Also, you can specify Tracking
+ID, which will return with the callback to identify the exact order. To do that provide additional parameters
+to `createBill()` method:
 
 ```php
 $bill = $provider->createBill(
@@ -178,7 +196,8 @@ $bill = $provider->createBill(
     );
 ```
 
-**Warning:** If specified, your Callback URL should return the message "OK" with status 200. Until that payment will not be considered complete!
+**Warning:** If specified, your Callback URL should return the message "OK" with status 200. Until that payment will not
+be considered complete!
 
 ```php
 header('HTTP/1.1 200 OK');
@@ -196,80 +215,101 @@ if (!$verifySign) {
     exit();
 }
 ```
-****WARNING:**** for each callback `$ _POST ['sign'] ['hash']` a new one is generated - if you received `$ _POST ['sign'] ['hash']` which was already used before, you should throw the same error as for signature verification
+
+****WARNING:**** for each callback `$ _POST ['sign'] ['hash']` a new one is generated - if you
+received `$ _POST ['sign'] ['hash']` which was already used before, you should throw the same error as for signature
+verification
 
 #### Callback body
 
 Bill callback request will contain the following data:
-```
+
+```json
 {
-    "data": {
-        "id": BILL_ID,
-        "url": URL_TO_BILL_PAYMENT_PAGE,
-        "address": BLOCKCHAIN_ADDRESS,
+  "data": {
+    "id": BILL_ID,
+    "url": URL_TO_BILL_PAYMENT_PAGE,
+    "address": BLOCKCHAIN_ADDRESS,
+    "created": TIME,
+    "expired": TIME
+    |
+    NULL,
+    "status": BILL_STATUS,
+    "tracking_id": TRACKING_ID,
+    "callback_url": URL
+    |
+    NULL
+    "amount": AMOUNT_MULTIPLIED_BY_TEN_IN_POW,
+    "actual_amount": ALREADY_PAID_AMOUNT_MULTIPLIED_BY_TEN_IN_POW,
+    "pow": POW,
+    "message": MESSAGE
+    |
+    NULL,
+    "transactions": [
+      {
+        "id": TRANSACTION_ID,
+        "bill_id": BILL_ID,
         "created": TIME,
-        "expired": TIME|NULL,
-        "status": BILL_STATUS,
-        "tracking_id": TRACKING_ID,
-        "callback_url": URL|NULL
-        "amount": AMOUNT_MULTIPLIED_BY_TEN_IN_POW,
-        "actual_amount": ALREADY_PAID_AMOUNT_MULTIPLIED_BY_TEN_IN_POW,
+        "amount": TRANSACTION_AMOUNT_MULTIPLIED_BY_TEN_IN_POW
+        ",
         "pow": POW,
-        "message": MESSAGE|NULL,
-        "transactions": [
-            {
-                "id": TRANSACTION_ID,
-                "bill_id": BILL_ID,
-                "created": TIME,
-                "amount": TRANSACTION_AMOUNT_MULTIPLIED_BY_TEN_IN_POW",
-                "pow": POW,
-                "status": TRANSACTION_STATUS,
-                "transaction": HASH_TRANSACTION_IN_BLOCKCHAIN,
-                "type": 0,
-                "currency": { 
-                    "iso": ISO_CODE_CURRENCY,
-                    "alpha": SYMBOL_CURRENCY
-                }
-            }
-        ],
-        "currency": { 
-            "iso": ISO_CODE_CURRENCY,
-            "alpha": SYMBOL_CURRENCY
-        },
-        "sign": {  
-            "time": TIME,
-            "hash": HASH
+        "status": TRANSACTION_STATUS,
+        "transaction": HASH_TRANSACTION_IN_BLOCKCHAIN,
+        "type": 0,
+        "currency": {
+          "iso": ISO_CODE_CURRENCY,
+          "alpha": SYMBOL_CURRENCY
         }
+      }
+    ],
+    "currency": {
+      "iso": ISO_CODE_CURRENCY,
+      "alpha": SYMBOL_CURRENCY
+    },
+    "sign": {
+      "time": TIME,
+      "hash": HASH
     }
+  }
 }
 ```
+
 Withdraw callback request will contain the following data:
-```
+
+```json
 {
-    "data": {
-        "id": WITHDRAW_ID,
-        "virtual_wallet_id": VIRTUAL_WALLET_ID,
-        "with_fee": INCLUDE_COMMISSION_IN_WITHDRAW,
-        "created": TIME,
-        "address": BLOCKCHAIN_ADDRESS,
-        "amount": AMOUNT_MULTIPLIED_BY_TEN_IN_POW,
-        "fee": BLOCKCHAIN_FEE_MULTIPLIED_BY_TEN_IN_POW,
-        "pow": POW,
-        "status": WITHDRAW_STATUS,
-        "transaction": HASH_TRANSACTION_IN_BLOCKCHAIN|NULL
-        "tracking_id": TRACKING_ID|NULL,
-        "unique_id": UNIQUE_WITHDRAW_ID,
-        "callback_url": URL|NULL,
-        "message": MESSAGE|NULL,
-        "currency": { 
-            "iso": ISO_CODE_CURRENCY,
-            "alpha": SYMBOL_CURRENCY
-        },
-        "sign": {  
-            "time": TIME,
-            "hash": HASH
-        }
+  "data": {
+    "id": WITHDRAW_ID,
+    "virtual_wallet_id": VIRTUAL_WALLET_ID,
+    "with_fee": INCLUDE_COMMISSION_IN_WITHDRAW,
+    "created": TIME,
+    "address": BLOCKCHAIN_ADDRESS,
+    "amount": AMOUNT_MULTIPLIED_BY_TEN_IN_POW,
+    "fee": BLOCKCHAIN_FEE_MULTIPLIED_BY_TEN_IN_POW,
+    "pow": POW,
+    "status": WITHDRAW_STATUS,
+    "transaction": HASH_TRANSACTION_IN_BLOCKCHAIN
+    |
+    NULL
+    "tracking_id": TRACKING_ID
+    |
+    NULL,
+    "unique_id": UNIQUE_WITHDRAW_ID,
+    "callback_url": URL
+    |
+    NULL,
+    "message": MESSAGE
+    |
+    NULL,
+    "currency": {
+      "iso": ISO_CODE_CURRENCY,
+      "alpha": SYMBOL_CURRENCY
+    },
+    "sign": {
+      "time": TIME,
+      "hash": HASH
     }
+  }
 }
 ```
 
@@ -292,6 +332,7 @@ $bill = $provider->createWithdrawal(
         'WITH_FEE'
     );
 ```
+
 | Params | Description |
 | --- | --- |
 | VIRTUAL_WALLET_ID | (int) ID virtual wallet. If the currency of the virtual wallet does not match the currency in which the withdrawal is to be made, the system will automatically convert at the current rate |
@@ -302,9 +343,11 @@ $bill = $provider->createWithdrawal(
 | TRACKING_ID | (string) _Optional_. Track for withdraw tracking. This value will be returned on callback |
 | CALLBACK_URL | (string) _Optional_. URL to which the callback will be sent |
 | MESSAGE | (string) _Optional_. Used for Ripple blockchain, NEM, Stellar, EOS and Binance Chain |
-| WITH_FEE | (boolean) _Optional_. Include the commission in the withdrawal amount. Not all blockchains support this method |
+| WITH_FEE | (boolean) _
+Optional_. Include the commission in the withdrawal amount. Not all blockchains support this method |
 
 ## System statuses lists
+
 ### List of bills statuses
 
 | Status | Description |
@@ -336,6 +379,7 @@ $bill = $provider->createWithdrawal(
 | 2 | Sent |
 
 ### List of transfers statuses
+
 | Status | Description |
 | --- | --- |
 | -1 | Failed |
@@ -355,7 +399,6 @@ $bill = $provider->createWithdrawal(
 | 6 | Bank transfer commission |
 | 7 | Commissions |
 
-
 ## License
-   
+
 B2BinPay\API-PHP is licensed under the [MIT License](https://github.com/b2binpay/api-php/blob/master/LICENSE).
