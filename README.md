@@ -37,8 +37,8 @@ or by editing `composer.json`:
 ## Local installation
 
 ```bash
-    $ composer install --no-dev
-    $ cp .env.example .env
+composer install --no-dev
+cp .env.example .env
 ```
 
 ## Support currencies
