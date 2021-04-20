@@ -5,6 +5,7 @@ namespace B2Binpay\Tests;
 
 use B2Binpay\Currency;
 use PHPUnit\Framework\TestCase;
+use B2Binpay\Exception\UnknownValueException;
 
 class CurrencyTest extends TestCase
 {
@@ -13,79 +14,75 @@ class CurrencyTest extends TestCase
      */
     private $currency;
 
-    private $currencyIso;
-    private $currencyAlpha;
-    private $currencyName;
-    private $currencyPrecision;
+    private $currency_iso;
+    private $currency_alpha;
+    private $currency_name;
+    private $currency_precision;
+    private $unknown_currency_iso;
+    private $unknown_currency_alpha;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->currency = new Currency();
-        $this->currencyIso = (int)getenv('CURRENCY_ISO');
-        $this->currencyAlpha = getenv('CURRENCY_ALPHA');
-        $this->currencyName = getenv('CURRENCY_NAME');
-        $this->currencyPrecision = (int)getenv('CURRENCY_PRECISION');
+        $this->currency_iso = (int)getenv('CURRENCY_ISO');
+        $this->currency_alpha = getenv('CURRENCY_ALPHA');
+        $this->currency_name = getenv('CURRENCY_NAME');
+        $this->currency_precision = (int)getenv('CURRENCY_PRECISION');
+        $this->unknown_currency_iso = (int)getenv('UNKNOWN_CURRENCY_ISO');
+        $this->unknown_currency_alpha = getenv('UNKNOWN_CURRENCY_ALPHA');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->currency = null;
     }
 
     public function testGetMaxPrecision()
     {
-        $this->assertInternalType('int', $this->currency->getMaxPrecision());
+        $this->assertIsInt($this->currency->getMaxPrecision());
     }
 
     public function testGetAlpha()
     {
-        $this->assertSame($this->currencyAlpha, $this->currency->getAlpha($this->currencyIso));
+        $this->assertSame($this->currency_alpha, $this->currency->getAlpha($this->currency_iso));
     }
 
-    /**
-     * @expectedException \B2Binpay\Exception\UnknownValueException
-     */
     public function testGetAlphaException()
     {
-        $this->currency->getAlpha(9999);
+        $this->expectException(UnknownValueException::class);
+        $this->currency->getAlpha($this->unknown_currency_iso);
     }
 
     public function testGetIso()
     {
-        $this->assertSame($this->currencyIso, $this->currency->getIso($this->currencyAlpha));
+        $this->assertSame($this->currency_iso, $this->currency->getIso($this->currency_alpha));
     }
 
-    /**
-     * @expectedException \B2Binpay\Exception\UnknownValueException
-     */
     public function testGetIsoException()
     {
-        $this->currency->getIso('test');
+        $this->expectException(UnknownValueException::class);
+        $this->currency->getIso($this->unknown_currency_alpha);
     }
 
     public function testGetPrecision()
     {
-        $this->assertSame($this->currencyPrecision, $this->currency->getPrecision($this->currencyIso));
+        $this->assertSame($this->currency_precision, $this->currency->getPrecision($this->currency_iso));
     }
 
-    /**
-     * @expectedException \B2Binpay\Exception\UnknownValueException
-     */
     public function testGetPrecisionException()
     {
+        $this->expectException(UnknownValueException::class);
         $this->currency->getPrecision(9999);
     }
 
     public function testGetName()
     {
-        $this->assertSame($this->currencyName, $this->currency->getName($this->currencyIso));
+        $this->assertSame($this->currency_name, $this->currency->getName($this->currency_iso));
     }
 
-    /**
-     * @expectedException \B2Binpay\Exception\UnknownValueException
-     */
     public function testGetNameException()
     {
-        $this->currency->getName(9999);
+        $this->expectException(UnknownValueException::class);
+        $this->currency->getName($this->unknown_currency_iso);
     }
 }

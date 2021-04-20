@@ -16,12 +16,12 @@ class AmountFactoryTest extends TestCase
      */
     private $currency;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->currency = $this->createMock(Currency::class);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->currency = null;
     }

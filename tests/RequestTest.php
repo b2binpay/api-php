@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace B2Binpay\Tests;
 
+use B2Binpay\Exception\UpdateTokenException;
+use B2Binpay\Exception\ConnectionErrorException;
+use B2Binpay\Exception\EmptyResponseException;
+use B2Binpay\Exception\ServerApiException;
 use B2Binpay\Request;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
@@ -20,18 +24,18 @@ class RequestTest extends TestCase
     /**
      * @var MockHandler
      */
-    protected $mockHandler;
+    protected $mock_handler;
 
     /**
      * @var Request
      */
     protected $request;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->mockHandler = new MockHandler();
+        $this->mock_handler = new MockHandler();
         $this->client = new Client([
-            'handler' => $this->mockHandler,
+            'handler' => $this->mock_handler,
         ]);
 
         $this->request = new Request($this->client);
@@ -39,22 +43,22 @@ class RequestTest extends TestCase
 
     public function testUpdateAccessToken()
     {
-        $responseToken = 'mockToken';
+        $response_token = 'mockToken';
 
-        $this->mockHandler->append(
-            new Response(200, [], $this->makeTokenResponse($responseToken))
+        $this->mock_handler->append(
+            new Response(200, [], $this->makeTokenResponse($response_token))
         );
 
         $token = $this->request->token($this->getUrl(), $this->getAuthBasic());
-        $this->assertSame($responseToken, $token);
+        $this->assertIsString($response_token, $token);
     }
 
-    /**
-     * @expectedException \B2Binpay\Exception\ConnectionErrorException
-     */
     public function testUpdateAccessTokenConnectionError()
     {
-        $this->mockHandler->append(
+
+        $this->expectException(ConnectionErrorException::class);
+
+        $this->mock_handler->append(
             new TransferException(
                 "Error"
             )
@@ -63,29 +67,27 @@ class RequestTest extends TestCase
         $this->request->token($this->getUrl(), $this->getAuthBasic());
     }
 
-    /**
-     * @expectedException \B2Binpay\Exception\EmptyResponseException
-     */
     public function testUpdateAccessTokenEmptyResponse()
     {
-        $this->mockHandler->append(
+        $this->expectException(EmptyResponseException::class);
+
+        $this->mock_handler->append(
             new Response(400, [], null)
         );
 
         $this->request->token($this->getUrl(), $this->getAuthBasic());
     }
 
-    /**
-     * @expectedException \B2Binpay\Exception\ServerApiException
-     */
     public function testUpdateAccessTokenServerError()
     {
+        $this->expectException(ServerApiException::class);
+
         $response = json_encode([
             'code' => '-100500',
             'error' => 'SOME_API_ERROR'
         ]);
 
-        $this->mockHandler->append(
+        $this->mock_handler->append(
             new Response(400, [], $response)
         );
 
@@ -97,24 +99,23 @@ class RequestTest extends TestCase
         $data1 = 'OK1';
         $data2 = 'OK2';
 
-        $this->mockHandler->append(
+        $this->mock_handler->append(
             new Response(200, [], $this->makeDataResponse($data1)),
             new Response(200, [], $this->makeDataResponse($data2))
         );
 
         $return = $this->request->send($this->getToken(), 'get', '/');
-        $this->assertEquals($data1, $return);
+        $this->assertEquals($data1, $return->data);
 
         $return = $this->request->send($this->getToken(), 'post', '/');
-        $this->assertEquals($data2, $return);
+        $this->assertEquals($data2, $return->data);
     }
 
-    /**
-     * @expectedException \B2Binpay\Exception\ConnectionErrorException
-     */
     public function testSendConnectionError()
     {
-        $this->mockHandler->append(
+        $this->expectException(ConnectionErrorException::class);
+
+        $this->mock_handler->append(
             new TransferException(
                 "Error"
             )
@@ -123,49 +124,46 @@ class RequestTest extends TestCase
         $this->request->send($this->getToken(), 'get', 'alarm');
     }
 
-    /**
-     * @expectedException \B2Binpay\Exception\EmptyResponseException
-     */
     public function testSendEmptyResponse()
     {
-        $this->mockHandler->append(
+        $this->expectException(EmptyResponseException::class);
+
+        $this->mock_handler->append(
             new Response(400, [], null)
         );
 
         $this->request->send($this->getToken(), 'get', '/');
     }
 
-    /**
-     * @expectedException \B2Binpay\Exception\ServerApiException
-     */
     public function testSendServerError()
     {
+        $this->expectException(ServerApiException::class);
+
         $response = json_encode([
             'code' => '-100500',
             'error' => 'SOME_API_ERROR'
         ]);
 
-        $this->mockHandler->append(
+        $this->mock_handler->append(
             new Response(400, [], $response)
         );
 
         $this->request->send($this->getToken(), 'get', '/');
     }
 
-    /**
-     * @expectedException \B2Binpay\Exception\UpdateTokenException
-     */
     public function testUpdateTokenException()
     {
+        $this->expectException(UpdateTokenException::class);
+
         list($code, $error) = $this->request::ERROR_UPDATE_TOKEN;
 
-        $responseUpdateToken = json_encode([
+        $response_update_token = json_encode([
             'code' => $code,
             'error' => $error
         ]);
 
-        $this->mockHandler->append(
-            new Response(400, [], $responseUpdateToken)
+        $this->mock_handler->append(
+            new Response(400, [], $response_update_token)
         );
 
         $this->request->send($this->getToken(), 'get', '/');
