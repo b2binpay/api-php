@@ -6,8 +6,8 @@
     "require": {
         "litipk/php-bignumbers": "^0.8",
         "guzzlehttp/guzzle": "^6.3",
-        "vlucas/phpdotenv": "^2.5",
-        "php": "^7.1",
+        "vlucas/phpdotenv": "^2.5|^3.3",
+        "php": "^7.1|^8.0",
         "ext-json": "*"
     },
     "require-dev": {
