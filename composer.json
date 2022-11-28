@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "litipk/php-bignumbers": "^0.8",
-        "guzzlehttp/guzzle": "^6.3",
+        "guzzlehttp/guzzle": "^7.0",
         "vlucas/phpdotenv": "^2.5",
         "php": "^7.1",
         "ext-json": "*"
